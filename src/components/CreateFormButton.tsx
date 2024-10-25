@@ -29,8 +29,10 @@ import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { formSchema, formSchemaType } from "../../schemas/form";
 import { CreateForm } from "@/actions/form";
+import { useRouter } from "next/navigation";
 
 export function CreateFormButton() {
+  const router = useRouter()
   const form = useForm<formSchemaType>({
     resolver: zodResolver(formSchema),
   });
@@ -45,7 +47,7 @@ export function CreateFormButton() {
         variant: "default",
       });
 
-      console.log(formId, "formId");
+      router.push(`/builder/${formId}`)
     } catch {
       toast({
         type: "background",
