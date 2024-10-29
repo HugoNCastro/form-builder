@@ -30,12 +30,28 @@ import { Textarea } from "./ui/textarea";
 import { formSchema, formSchemaType } from "../../schemas/form";
 import { CreateForm } from "@/actions/form";
 import { useRouter } from "next/navigation";
+import { Select, SelectItem } from "./ui/select";
+import { useEffect, useState } from "react";
+import {
+  listCampaignsAction,
+  listMailingsAssociateToCampaign,
+} from "@/actions/dialer";
+import { CampaignProps, MailingProps } from "@/types";
+import {
+  SelectContent,
+  SelectTrigger,
+  SelectValue,
+} from "@radix-ui/react-select";
 
 export function CreateFormButton() {
-  const router = useRouter()
+  const router = useRouter();
   const form = useForm<formSchemaType>({
     resolver: zodResolver(formSchema),
   });
+
+  const [campaigns, setCampaings] = useState<CampaignProps[]>([]);
+  const [selectedCampaign, setSelectedCampaign] = useState({} as CampaignProps);
+  const [mailing, setMailing] = useState<MailingProps[]>([]);
 
   async function onSubmit(values: formSchemaType) {
     try {
@@ -47,7 +63,7 @@ export function CreateFormButton() {
         variant: "default",
       });
 
-      router.push(`/builder/${formId}`)
+      router.push(`/builder/${formId}`);
     } catch {
       toast({
         type: "background",
@@ -57,20 +73,60 @@ export function CreateFormButton() {
     }
   }
 
+  async function listMailing(campaignId: string) {
+    listMailingsAssociateToCampaign(campaignId).then((result) => {
+      setMailing(result);
+    });
+  }
+
+  const onChangeCampaign = (value: string) => {
+    const findCampaign = campaigns.find(
+      (campaing) => campaing.ds_campanha === value
+    );
+
+    if (!findCampaign) {
+      throw new Error("Campanha não encontrada");
+    }
+
+    setSelectedCampaign(findCampaign);
+  };
+
+  useEffect(() => {
+    listCampaignsAction().then((e) => {
+      const result = e["webservice-discador-lista-campanha"];
+      if (result) {
+        setCampaings(result);
+      }
+    });
+  }, []);
+
+  console.log(form, "form");
+
+  useEffect(() => {
+    if (selectedCampaign.cd_campanha) {
+      listMailing(String(selectedCampaign.cd_campanha));
+    }
+  }, [selectedCampaign]);
+
+  console.log(selectedCampaign, 'selectedCampaign')
+
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant={"outline"} className="group border border-primary/20 h-[190px] items-center justify-center flex flex-col hover:border-primary hover:cursor-pointer border-dashed gap-4">
-          <File className="h-8 w-8 text-muted-foreground group-hover:text-primary"/>
-          <p className="font-bold text-xl text-muted-foreground group-hover:text-primary">Criar nova enquete</p>
+        <Button
+          variant={"outline"}
+          className="group border border-primary/20 h-[190px] items-center justify-center flex flex-col hover:border-primary hover:cursor-pointer border-dashed gap-4"
+        >
+          <File className="h-8 w-8 text-muted-foreground group-hover:text-primary" />
+          <p className="font-bold text-xl text-muted-foreground group-hover:text-primary">
+            Criar nova enquete
+          </p>
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Criar enquete</DialogTitle>
-          <DialogDescription>
-            Crie uma nova enquete
-          </DialogDescription>
+          <DialogDescription>Crie uma nova enquete</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
@@ -86,7 +142,7 @@ export function CreateFormButton() {
                 </FormItem>
               )}
             />
-            
+
             <FormField
               control={form.control}
               name="description"
@@ -94,11 +150,70 @@ export function CreateFormButton() {
                 <FormItem>
                   <FormLabel>Descrição</FormLabel>
                   <FormControl>
-                    <Textarea rows={5} {...field} className="min-h-40 max-h-60"/>
+                    <Textarea
+                      rows={5}
+                      {...field}
+                      className="min-h-40 max-h-60"
+                    />
                   </FormControl>
                 </FormItem>
               )}
             />
+
+            <FormField
+              control={form.control}
+              name="campaign"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Select {...field} onValueChange={onChangeCampaign}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecione a campanha" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-background">
+                        {campaigns.map((campaign) => (
+                          <SelectItem
+                            key={campaign.cd_campanha}
+                            value={campaign.ds_campanha}
+                          >
+                            {campaign.ds_campanha}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            {selectedCampaign.cd_campanha && (
+              <FormField
+                control={form.control}
+                name="mailing"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Select { ...field }>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecione o mailing" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-background">
+                          {mailing.map((mailing) => (
+                            <SelectItem
+                              key={mailing.cd_campanha_arquivo}
+                              value={String(mailing.cd_campanha_arquivo)}
+                            >
+                              {mailing.cd_campanha_arquivo} |{" "}
+                              {mailing.ds_campanha_arquivo}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            )}
           </form>
         </Form>
         <DialogFooter>
