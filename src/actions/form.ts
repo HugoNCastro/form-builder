@@ -43,7 +43,6 @@ export async function CreateForm(data: formSchemaType) {
 
     const form = await prisma.form.create({
         data: {
-            userId: "user_2ntUyPcVdHth91sSMMwzDOSxSBp",
             name,
             description
         }
