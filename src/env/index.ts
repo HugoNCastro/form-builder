@@ -20,7 +20,8 @@ export const env = createEnv({
   client: {},
   shared: {
     NEXT_PUBLIC_BASE_URL: z.string().url(),
-    NEXT_PUBLIC_CLIENT_NAME: z.string()
+    NEXT_PUBLIC_CLIENT_NAME: z.string(),
+    NEXT_PUBLIC_LOGO_PATH: z.string()
   },
   runtimeEnv: {
     DIALER_IP: process.env.DIALER_IP,
@@ -37,7 +38,8 @@ export const env = createEnv({
     POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD,
     POSTGRES_PORT: process.env.POSTGRES_PORT,
     POSTGRES_DB_NAME: process.env.POSTGRES_DB_NAME,
-    NEXT_PUBLIC_CLIENT_NAME: process.env.NEXT_PUBLIC_CLIENT_NAME
+    NEXT_PUBLIC_CLIENT_NAME: process.env.NEXT_PUBLIC_CLIENT_NAME,
+    NEXT_PUBLIC_LOGO_PATH: process.env.NEXT_PUBLIC_LOGO_PATH
   },
   emptyStringAsUndefined: true,
 })

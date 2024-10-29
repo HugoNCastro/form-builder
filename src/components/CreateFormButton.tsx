@@ -43,7 +43,7 @@ export function CreateFormButton() {
 
       toast({
         type: "background",
-        value: "Form created sucessfully",
+        value: "Enquete criada com sucesso",
         variant: "default",
       });
 
@@ -51,7 +51,7 @@ export function CreateFormButton() {
     } catch {
       toast({
         type: "background",
-        value: "Failed to create form. Please try again.",
+        value: "Não foi possível criar a enquete. Por favor, tente novamente.",
         variant: "destructive",
       });
     }
@@ -62,14 +62,14 @@ export function CreateFormButton() {
       <DialogTrigger asChild>
         <Button variant={"outline"} className="group border border-primary/20 h-[190px] items-center justify-center flex flex-col hover:border-primary hover:cursor-pointer border-dashed gap-4">
           <File className="h-8 w-8 text-muted-foreground group-hover:text-primary"/>
-          <p className="font-bold text-xl text-muted-foreground group-hover:text-primary">Create new survey</p>
+          <p className="font-bold text-xl text-muted-foreground group-hover:text-primary">Criar nova enquete</p>
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create survey</DialogTitle>
+          <DialogTitle>Criar enquete</DialogTitle>
           <DialogDescription>
-            Create a new form to start collecting responses
+            Crie uma nova enquete
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -79,7 +79,7 @@ export function CreateFormButton() {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Nome</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -92,9 +92,9 @@ export function CreateFormButton() {
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Desscription</FormLabel>
+                  <FormLabel>Descrição</FormLabel>
                   <FormControl>
-                    <Textarea rows={5} {...field} />
+                    <Textarea rows={5} {...field} className="min-h-40 max-h-60"/>
                   </FormControl>
                 </FormItem>
               )}
@@ -107,7 +107,7 @@ export function CreateFormButton() {
             disabled={form.formState.isSubmitting}
             onClick={form.handleSubmit(onSubmit)}
           >
-            {!form.formState.isSubmitting && <span>Save</span>}
+            {!form.formState.isSubmitting && <span>Salvar</span>}
             {form.formState.isSubmitting && (
               <LucidePenTool className="animate-spin" />
             )}

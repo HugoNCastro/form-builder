@@ -9,6 +9,7 @@ import { ArrowRightIcon, Edit, LucideView, View, ViewIcon } from "lucide-react";
 import { ReactNode, Suspense } from "react";
 import { formatDistance } from "date-fns"
 import { Button } from "@/components/ui/button";
+import { ptBR } from 'date-fns/locale'
 import Link from "next/link";
 
 export default function Home() {
@@ -18,7 +19,7 @@ export default function Home() {
         <CardStatsWrapper />
       </Suspense>
       <Separator className="my-6" />
-      <h2 className="text-4xl font-bold col-span-2">Your forms</h2>
+      <h2 className="text-4xl font-bold col-span-2">Enquetes cadastradas</h2>
       <Separator className="my-6" />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gao-6">
         <CreateFormButton />
@@ -48,36 +49,36 @@ function StatsCards(props: StatsCardProps) {
   return (
     <div className="w-full pt-8 gap-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
       <StatsCard
-        title="Total visits"
+        title="Total de visitas"
         icon={<LucideView className="text-blue-600" />}
-        helperText="All time form visits"
+        helperText="Total de visitas das enquetes cadastradas"
         value={data?.visits.toLocaleString() || ""}
         loading={loading}
         className="shadow-md shadow-blue-600"
       />
 
       <StatsCard
-        title="Total submissions"
+        title="Total de respostas"
         icon={<LucideView className="text-yellow-600" />}
-        helperText="All time form submissions"
+        helperText="Total de respostas das enquetes cadastradas"
         value={data?.submissions.toLocaleString() || ""}
         loading={loading}
         className="shadow-md shadow-yellow-600"
       />
 
       <StatsCard
-        title="Submission rate"
+        title="Envio de formulário"
         icon={<LucideView className="text-green-600" />}
-        helperText="Visits that result in form submission "
+        helperText="Visitas que resultaram em envio de respostas"
         value={data?.submissionRate.toLocaleString() + "%" || ""}
         loading={loading}
         className="shadow-md shadow-green-600"
       />
 
       <StatsCard
-        title="Bounce rate"
+        title="Taxa de rejeição"
         icon={<LucideView className="text-red-600" />}
-        helperText="Visits that leave without interacting"
+        helperText="Taxa de visitas que nào interagiram com formulário"
         value={data?.bounceRate.toLocaleString() + "%" || ""}
         loading={loading}
         className="shadow-md shadow-red-600"
@@ -146,12 +147,13 @@ function FormCard({ form }: { form: Form }) {
           <span className="truncate font-bold">
             {form.name}
           </span>
-          {form.published && <Badge>Published</Badge>}
-          {!form.published && <Badge variant={"destructive"}>Draft</Badge>}
+          {form.published && <Badge>Publicada</Badge>}
+          {!form.published && <Badge variant={"destructive"}>Não publicada</Badge>}
         </CardTitle>
         <CardDescription className="flex items-center justify-between text-muted-foreground text-sm">
           {formatDistance(form.createAt, new Date(), {
-            addSuffix: true
+            addSuffix: true,
+            locale: ptBR
           })}
           {form.published && <span className="flex items-center gap-2">
             <View className="text-muted-foreground" />
@@ -162,13 +164,13 @@ function FormCard({ form }: { form: Form }) {
         </CardDescription>
       </CardHeader>
       <CardContent className="h-[20px] truncate text-sm text-muted-foreground">
-        {form.description || "No description"}
+        {form.description || "Sem descrição cadastrada"}
       </CardContent>
       <CardFooter>
         {form.published && (
             <Button asChild className="w-full mt-2 text-md gap-4">
               <Link href={`/forms/${form.id}`}>
-                View submissions
+                Visulizar interações
                 <ArrowRightIcon />
               </Link>
             </Button>
@@ -176,7 +178,7 @@ function FormCard({ form }: { form: Form }) {
         {!form.published && (
             <Button asChild variant={"secondary"} className="w-full mt-2 text-md gap-4">
               <Link href={`/builder/${form.id}`}>
-                Edit Form
+                Editar enquete
                 <Edit />
               </Link>
             </Button>
