@@ -122,7 +122,16 @@ async function SubmissionsTable({ id }: { id: number }) {
   formElements.forEach((element) => {
     switch (element.type) {
       case "TextField":
-        columns.push({
+      case "NumberField":
+      case "TextAreaField":
+      case "CheckboxField":
+      case "DateField":
+      case "ParagraphField": 
+      case "SelectField":
+      case "SubTitleField":
+      case "TitleField":
+      
+      columns.push({
           id: element.id,
           label: element.extraAttributes?.label,
           required: element.extraAttributes?.required,
@@ -192,21 +201,21 @@ async function SubmissionsTable({ id }: { id: number }) {
 }
 
 function RowCell({ type, value }: { type: ElementsType; value: string }) {
-  const node: ReactNode = value;
+  let node: ReactNode = value;
 
-  // switch (type) {
-  //   case "DateField":
-  //     if(!value) break
-  //     const date = new Date(value);
-  //     node = <Badge variant={"outline"}>{format(date, "dd/MM/yyyy")}</Badge>
-  //     break;
-  //   case "CheckboxField":
-  //     const checked = value === "true" ? true : false;
-  //     node = <Checkbox checked={checked} disabled />
-  //     break
-  //   default:
-  //     break;
-  // }
+  switch (type) {
+    case "DateField":
+      if(!value) break
+      const date = new Date(value);
+      node = <Badge variant={"outline"}>{format(date, "dd/MM/yyyy")}</Badge>
+      break;
+    case "CheckboxField":
+      const checked = value === "true" ? true : false;
+      node = <Checkbox checked={checked} disabled />
+      break
+    default:
+      break;
+  }
 
   return <TableCell>{node}</TableCell>;
 }
