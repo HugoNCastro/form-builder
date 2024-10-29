@@ -1,6 +1,6 @@
 "use client";
 
-import { Text } from "lucide-react";
+import { SquarePi } from "lucide-react";
 import {
   ElementsType,
   FormElement,
@@ -26,13 +26,13 @@ import {
 import { Switch } from "../ui/switch";
 import { cn } from "@/lib/utils";
 
-const type: ElementsType = "TextField";
+const type: ElementsType = "NumberField";
 
 const extraAttributes = {
-  label: "Text field",
+  label: "Number field",
   helperText: "Helper text",
   required: false,
-  placeHolder: "Value here...",
+  placeHolder: "0",
 };
 
 const propertiesSchema = z.object({
@@ -42,7 +42,7 @@ const propertiesSchema = z.object({
   placeHolder: z.string().max(50),
 });
 
-export const TextFieldFormElement: FormElement = {
+export const NumberFieldFormElement: FormElement = {
   type,
   construct: (id: string) => ({
     id,
@@ -50,8 +50,8 @@ export const TextFieldFormElement: FormElement = {
     extraAttributes,
   }),
   designerButtonElement: {
-    icon: Text,
-    label: "Text Field",
+    icon: SquarePi,
+    label: "Number Field",
   },
   designerComponent: DesignerComponent,
   formComponent: FormComponent,
@@ -88,7 +88,7 @@ function DesignerComponent({
         {label}
         {required && "*"}
       </Label>
-      <Input readOnly disabled placeholder={placeHolder} />
+      <Input readOnly type="number" disabled placeholder={placeHolder} />
       {helperText && (
         <p className="text-muted-foreground text-[0.8rem]">{helperText}</p>
       )}
@@ -241,12 +241,12 @@ function FormComponent({
   elementInstance,
   submitValue,
   isInvalid,
-  defaultValue
+  defaultValue,
 }: {
   elementInstance: FormElementInstance;
   submitValue?: SubmitFunction;
   isInvalid?: boolean;
-  defaultValue?: string
+  defaultValue?: string;
 }) {
   const element = elementInstance as CustomInstance;
   const { helperText, label, placeHolder, required } = element.extraAttributes;
@@ -264,21 +264,32 @@ function FormComponent({
         {required && "*"}
       </Label>
       <Input
+        type="number"
         className={cn(error && "border-red-500")}
         placeholder={placeHolder}
         onChange={(e) => setValue(e.target.value)}
         onBlur={(e) => {
           if (!submitValue) return;
-          const valid = TextFieldFormElement.validate(element, e.target.value)
-          setError(!valid)
-          if(!valid) return
+          const valid = NumberFieldFormElement.validate(
+            element,
+            e.target.value
+          );
+          setError(!valid);
+          if (!valid) return;
 
           submitValue(element.id, e.target.value);
         }}
         value={value}
       />
       {helperText && (
-        <p className={cn("text-muted-foreground text-[0.8rem]", error && "text-red-500")}>{helperText}</p>
+        <p
+          className={cn(
+            "text-muted-foreground text-[0.8rem]",
+            error && "text-red-500"
+          )}
+        >
+          {helperText}
+        </p>
       )}
     </div>
   );

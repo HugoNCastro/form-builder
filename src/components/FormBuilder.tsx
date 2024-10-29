@@ -23,7 +23,7 @@ import Link from "next/link";
 import Confetti from "react-confetti";
 
 export default function FormBuilder({ form }: { form: Form }) {
-  const { setElements } = useDesigner();
+  const { setElements, setSelectedElement } = useDesigner();
   const [isReady, setIsReady] = useState(false);
 
   const mouseSensor = useSensor(MouseSensor, {
@@ -46,10 +46,12 @@ export default function FormBuilder({ form }: { form: Form }) {
 
     const elements = JSON.parse(form.content);
     setElements(elements);
+    setSelectedElement(null)
+    setIsReady(true)
     const readyTimeout = setTimeout(() => setIsReady(true), 500);
 
     return () => clearTimeout(readyTimeout);
-  }, [form, isReady, setElements]);
+  }, [form, isReady, setElements, setSelectedElement]);
 
   if (!isReady) {
     return (

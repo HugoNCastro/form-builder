@@ -1,6 +1,6 @@
 "use client";
 
-import { Text } from "lucide-react";
+import { NotepadText } from "lucide-react";
 import {
   ElementsType,
   FormElement,
@@ -25,14 +25,17 @@ import {
 } from "@/components/ui/form";
 import { Switch } from "../ui/switch";
 import { cn } from "@/lib/utils";
+import { Textarea } from "../ui/textarea";
+import { Slider } from "../ui/slider";
 
-const type: ElementsType = "TextField";
+const type: ElementsType = "TextAreaField";
 
 const extraAttributes = {
-  label: "Text field",
+  label: "Text area",
   helperText: "Helper text",
   required: false,
   placeHolder: "Value here...",
+  rows: 3,
 };
 
 const propertiesSchema = z.object({
@@ -40,9 +43,10 @@ const propertiesSchema = z.object({
   helperText: z.string().max(200),
   required: z.boolean().default(false),
   placeHolder: z.string().max(50),
+  rows: z.number().min(1).max(10),
 });
 
-export const TextFieldFormElement: FormElement = {
+export const TextAreaFieldFormElement: FormElement = {
   type,
   construct: (id: string) => ({
     id,
@@ -50,8 +54,8 @@ export const TextFieldFormElement: FormElement = {
     extraAttributes,
   }),
   designerButtonElement: {
-    icon: Text,
-    label: "Text Field",
+    icon: NotepadText,
+    label: "TextArea Field",
   },
   designerComponent: DesignerComponent,
   formComponent: FormComponent,
@@ -88,7 +92,7 @@ function DesignerComponent({
         {label}
         {required && "*"}
       </Label>
-      <Input readOnly disabled placeholder={placeHolder} />
+      <Textarea readOnly disabled placeholder={placeHolder} />
       {helperText && (
         <p className="text-muted-foreground text-[0.8rem]">{helperText}</p>
       )}
@@ -114,6 +118,7 @@ function PropertiesComponent({
       helperText: element.extraAttributes.helperText,
       required: element.extraAttributes.required,
       placeHolder: element.extraAttributes.placeholder,
+      rows: element.extraAttributes.rows,
     },
   });
 
@@ -122,7 +127,7 @@ function PropertiesComponent({
   }, [form, element]);
 
   function applyChanges(values: PropertiesFormSchemaType) {
-    const { helperText, label, placeHolder, required } = values;
+    const { helperText, label, placeHolder, required, rows } = values;
 
     updateElement(element.id, {
       ...element,
@@ -131,6 +136,7 @@ function PropertiesComponent({
         helperText,
         required,
         placeHolder,
+        rows
       },
     });
   }
@@ -211,6 +217,28 @@ function PropertiesComponent({
 
         <FormField
           control={form.control}
+          name="rows"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Rows {form.watch("rows")}</FormLabel>
+              <FormControl>
+                <Slider 
+                  defaultValue={[field.value]}
+                  min={1}
+                  max={10}
+                  step={1}
+                  onValueChange={(value) => {
+                    field.onChange(value[0])
+                  }}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
           name="required"
           render={({ field }) => (
             <FormItem className="flex items-center justify-center rounded-lg border p-3 shadow-sm">
@@ -249,7 +277,7 @@ function FormComponent({
   defaultValue?: string
 }) {
   const element = elementInstance as CustomInstance;
-  const { helperText, label, placeHolder, required } = element.extraAttributes;
+  const { helperText, label, placeHolder, required, rows } = element.extraAttributes;
   const [value, setValue] = useState(defaultValue || "");
   const [error, setError] = useState(false);
 
@@ -263,13 +291,14 @@ function FormComponent({
         {label}
         {required && "*"}
       </Label>
-      <Input
+      <Textarea
         className={cn(error && "border-red-500")}
+        rows={rows}
         placeholder={placeHolder}
         onChange={(e) => setValue(e.target.value)}
         onBlur={(e) => {
           if (!submitValue) return;
-          const valid = TextFieldFormElement.validate(element, e.target.value)
+          const valid = TextAreaFieldFormElement.validate(element, e.target.value)
           setError(!valid)
           if(!valid) return
 

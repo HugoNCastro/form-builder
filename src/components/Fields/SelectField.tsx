@@ -1,6 +1,6 @@
 "use client";
 
-import { Text } from "lucide-react";
+import { BoxSelect, PlusIcon, X } from "lucide-react";
 import {
   ElementsType,
   FormElement,
@@ -25,14 +25,25 @@ import {
 } from "@/components/ui/form";
 import { Switch } from "../ui/switch";
 import { cn } from "@/lib/utils";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { Separator } from "../ui/separator";
+import { Button } from "../ui/button";
+import { toast } from "@/hooks/use-toast";
 
-const type: ElementsType = "TextField";
+const type: ElementsType = "SelectField";
 
 const extraAttributes = {
-  label: "Text field",
+  label: "Select field",
   helperText: "Helper text",
   required: false,
   placeHolder: "Value here...",
+  options: [],
 };
 
 const propertiesSchema = z.object({
@@ -40,9 +51,10 @@ const propertiesSchema = z.object({
   helperText: z.string().max(200),
   required: z.boolean().default(false),
   placeHolder: z.string().max(50),
+  options: z.array(z.string()).default([]),
 });
 
-export const TextFieldFormElement: FormElement = {
+export const SelectFieldFormElement: FormElement = {
   type,
   construct: (id: string) => ({
     id,
@@ -50,8 +62,8 @@ export const TextFieldFormElement: FormElement = {
     extraAttributes,
   }),
   designerButtonElement: {
-    icon: Text,
-    label: "Text Field",
+    icon: BoxSelect,
+    label: "Select Field",
   },
   designerComponent: DesignerComponent,
   formComponent: FormComponent,
@@ -88,7 +100,11 @@ function DesignerComponent({
         {label}
         {required && "*"}
       </Label>
-      <Input readOnly disabled placeholder={placeHolder} />
+      <Select>
+        <SelectTrigger className="w-full">
+          <SelectValue placeholder={placeHolder} />
+        </SelectTrigger>
+      </Select>
       {helperText && (
         <p className="text-muted-foreground text-[0.8rem]">{helperText}</p>
       )}
@@ -104,16 +120,17 @@ function PropertiesComponent({
 }) {
   const element = elementInstance as CustomInstance;
 
-  const { updateElement } = useDesigner();
+  const { updateElement, setSelectedElement } = useDesigner();
 
   const form = useForm<PropertiesFormSchemaType>({
     resolver: zodResolver(propertiesSchema),
-    mode: "onBlur",
+    mode: "onSubmit",
     defaultValues: {
       label: element.extraAttributes.label,
       helperText: element.extraAttributes.helperText,
       required: element.extraAttributes.required,
       placeHolder: element.extraAttributes.placeholder,
+      options: element.extraAttributes.options,
     },
   });
 
@@ -122,7 +139,7 @@ function PropertiesComponent({
   }, [form, element]);
 
   function applyChanges(values: PropertiesFormSchemaType) {
-    const { helperText, label, placeHolder, required } = values;
+    const { helperText, label, placeHolder, required, options } = values;
 
     updateElement(element.id, {
       ...element,
@@ -131,19 +148,21 @@ function PropertiesComponent({
         helperText,
         required,
         placeHolder,
+        options,
       },
     });
+
+    toast({
+      title: "Success",
+      description: "Properties saved successfully",
+    });
+
+    setSelectedElement(null);
   }
 
   return (
     <Form {...form}>
-      <form
-        onBlur={form.handleSubmit(applyChanges)}
-        onSubmit={(event) => {
-          event.preventDefault();
-        }}
-        className="space-y-6"
-      >
+      <form onSubmit={form.handleSubmit(applyChanges)} className="space-y-6">
         <FormField
           control={form.control}
           name="label"
@@ -209,6 +228,71 @@ function PropertiesComponent({
           )}
         />
 
+        <Separator />
+
+        <FormField
+          control={form.control}
+          name="options"
+          render={({ field }) => (
+            <FormItem>
+              <div className="flex justify-between items-center">
+                <FormLabel>Options</FormLabel>
+                <Button
+                  variant={"outline"}
+                  className="gap-2"
+                  onClick={(e) => {
+                    e.preventDefault(); //avoid submit
+                    form.setValue("options", field.value.concat("New option"));
+                  }}
+                >
+                  <PlusIcon />
+                  Add
+                </Button>
+              </div>
+              <div className="flex flex-col gap-2">
+                {form.watch("options").map((option, index) => {
+                  return (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between gap-1"
+                    >
+                      <Input
+                        placeholder=""
+                        value={option}
+                        onChange={(e) => {
+                          field.value[index] = e.target.value;
+                          field.onChange(field.value);
+                        }}
+                      />
+                      <Button
+                        variant={"ghost"}
+                        className=""
+                        size={"icon"}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          const newOptions = [...field.value];
+                          newOptions.splice(index, 1);
+                          field.onChange(newOptions);
+                        }}
+                      >
+                        <X />
+                      </Button>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <FormDescription>
+                The helper text of the field. <br /> It will be displayed below
+                the field.{" "}
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <Separator />
+
         <FormField
           control={form.control}
           name="required"
@@ -232,6 +316,10 @@ function PropertiesComponent({
             </FormItem>
           )}
         />
+        <Separator />
+        <Button className="w-full" type="submit">
+          Save
+        </Button>
       </form>
     </Form>
   );
@@ -241,15 +329,16 @@ function FormComponent({
   elementInstance,
   submitValue,
   isInvalid,
-  defaultValue
+  defaultValue,
 }: {
   elementInstance: FormElementInstance;
   submitValue?: SubmitFunction;
   isInvalid?: boolean;
-  defaultValue?: string
+  defaultValue?: string;
 }) {
   const element = elementInstance as CustomInstance;
-  const { helperText, label, placeHolder, required } = element.extraAttributes;
+  const { helperText, label, placeHolder, required, options } =
+    element.extraAttributes;
   const [value, setValue] = useState(defaultValue || "");
   const [error, setError] = useState(false);
 
@@ -263,22 +352,38 @@ function FormComponent({
         {label}
         {required && "*"}
       </Label>
-      <Input
-        className={cn(error && "border-red-500")}
-        placeholder={placeHolder}
-        onChange={(e) => setValue(e.target.value)}
-        onBlur={(e) => {
+      <Select
+        defaultValue={value}
+        onValueChange={(value) => {
+          setValue(value);
           if (!submitValue) return;
-          const valid = TextFieldFormElement.validate(element, e.target.value)
-          setError(!valid)
-          if(!valid) return
-
-          submitValue(element.id, e.target.value);
+          const valid = SelectFieldFormElement.validate(element, value);
+          setError(!valid);
+          submitValue(element.id, value);
         }}
-        value={value}
-      />
+      >
+        <SelectTrigger className={cn("w-full", error && "border-red-500")}>
+          <SelectValue placeholder={placeHolder} />
+        </SelectTrigger>
+        <SelectContent>
+          {options.map((option) => {
+            return (
+              <SelectItem key={option} value={option}>
+                {option}
+              </SelectItem>
+            );
+          })}
+        </SelectContent>
+      </Select>
       {helperText && (
-        <p className={cn("text-muted-foreground text-[0.8rem]", error && "text-red-500")}>{helperText}</p>
+        <p
+          className={cn(
+            "text-muted-foreground text-[0.8rem]",
+            error && "text-red-500"
+          )}
+        >
+          {helperText}
+        </p>
       )}
     </div>
   );

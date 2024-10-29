@@ -4,12 +4,7 @@ import { prisma } from "@/lib/prisma"
 import { formSchema, formSchemaType } from "../../schemas/form"
 
 export async function GetFormStats() {
-
-
     const stats = prisma.form.aggregate({
-        where: {
-            userId: "user_2ntUyPcVdHth91sSMMwzDOSxSBp",
-        },
         _sum: {
             visits: true,
             submissions: true
@@ -62,12 +57,7 @@ export async function CreateForm(data: formSchemaType) {
 }
 
 export async function GetForms() {
-
-
     return await prisma.form.findMany({
-        where: {
-            userId: "user_2ntUyPcVdHth91sSMMwzDOSxSBp"
-        },
         orderBy: {
             createAt: 'desc'
         }
@@ -75,11 +65,8 @@ export async function GetForms() {
 }
 
 export async function GetFormById(id: number) {
-
-
     return prisma.form.findUnique({
         where: {
-            userId: "user_2ntUyPcVdHth91sSMMwzDOSxSBp",
             id: id
         }
     })
@@ -87,11 +74,8 @@ export async function GetFormById(id: number) {
 }
 
 export async function UpdateFormContent(id: number, jsonContent: string){
-
-
     return await prisma.form.update({
         where: {
-            userId: "user_2ntUyPcVdHth91sSMMwzDOSxSBp",
             id,
         },
         data: {
@@ -102,11 +86,8 @@ export async function UpdateFormContent(id: number, jsonContent: string){
 }
 
 export async function PublishForm(id: number){
-
-
     return await prisma.form.update({
         where: {
-            userId: "user_2ntUyPcVdHth91sSMMwzDOSxSBp",
             id,
         },
         data: {
