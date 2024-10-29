@@ -4,16 +4,14 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  url       = env("POSTGRES_PRISMA_URL")
-  directUrl = env("POSTGRES_URL_NON_POOLING")
+  url = env("DATABASE_URL")
 }
 
 model Form {
   id          Int      @id @default(autoincrement())
-  userId      String
+  name        String
   createAt    DateTime @default(now())
   published   Boolean  @default(false)
-  name        String
   description String   @default("")
   content     String   @default("[]")
 
@@ -23,8 +21,6 @@ model Form {
   sharedURL String @unique @default(uuid())
 
   FormSubmissions FormSubmissions[]
-
-  @@unique([name, userId])
 }
 
 model FormSubmissions {
