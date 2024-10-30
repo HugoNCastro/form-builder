@@ -1,5 +1,5 @@
-import { Logo } from "@/components/Logo";
-import { ThemeSwitcher } from "@/components/ThemeSwitcher";
+import { Logo } from "@/components/Layout/Logo";
+import { ThemeSwitcher } from "@/components/Layout/ThemeSwitcher";
 import { ReactNode } from "react";
 
 export default function Layout({ children }: { children: ReactNode }) {
@@ -11,7 +11,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           <ThemeSwitcher />
         </div>
       </nav>
-      <main className="flex w-full flex-grow">
+      <main className="flex w-full flex-grow p-10">
         {children}
         </main>
     </div>

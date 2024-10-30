@@ -1,7 +1,7 @@
 import { GetFormById, GetFormWithSubmissions } from "@/actions/form";
-import { FormLinkShare } from "@/components/FormLinkShare";
-import { VisitButton } from "@/components/VisitButton";
-import { StatsCard } from "../../page";
+import { FormLinkShare } from "@/components/Form/FormLinkShare";
+import { VisitButton } from "@/components/Buttons/VisitButton";
+
 import { LucideView } from "lucide-react";
 import { ElementsType, FormElementInstance } from "@/components/FormElements";
 import {
@@ -16,6 +16,8 @@ import { format, formatDistance } from "date-fns";
 import { ReactNode } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
+import { StatsCard } from "@/components/Cards/StatsCard";
+import { ptBR } from "date-fns/locale";
 
 export default async function FormDetailPage({
   params,
@@ -57,36 +59,36 @@ export default async function FormDetailPage({
       </div>
       <div className="w-full pt-8 gap-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 container">
         <StatsCard
-          title="Total visits"
+          title="Total de visitas"
           icon={<LucideView className="text-blue-600" />}
-          helperText="All time form visits"
+          helperText="Total de visitas dessa enquete"
           value={visits.toLocaleString() || ""}
           loading={false}
           className="shadow-md shadow-blue-600"
         />
 
         <StatsCard
-          title="Total submissions"
+          title="Total de respostas"
           icon={<LucideView className="text-yellow-600" />}
-          helperText="All time form submissions"
+          helperText="Total de respostas cadastradas dessa enquete."
           value={submissions.toLocaleString() || ""}
           loading={false}
           className="shadow-md shadow-yellow-600"
         />
 
         <StatsCard
-          title="Submission rate"
+          title="Envio de formulário"
           icon={<LucideView className="text-green-600" />}
-          helperText="Visits that result in form submission "
+          helperText="Visitas que resultaram em envio de respostas dessa enquete"
           value={submissionRate.toLocaleString() + "%" || ""}
           loading={false}
           className="shadow-md shadow-green-600"
         />
 
         <StatsCard
-          title="Bounce rate"
+          title="Taxa de rejeição"
           icon={<LucideView className="text-red-600" />}
-          helperText="Visits that leave without interacting"
+          helperText="Taxa de visitas que nào interagiram com formulário"
           value={bounceRate.toLocaleString() + "%" || ""}
           loading={false}
           className="shadow-md shadow-red-600"
@@ -107,7 +109,7 @@ async function SubmissionsTable({ id }: { id: number }) {
   const form = await GetFormWithSubmissions(id);
 
   if (!form) {
-    throw new Error("Form not found");
+    throw new Error("Formuário não encontrado");
   }
 
   const formElements = JSON.parse(form.content) as FormElementInstance[];
@@ -168,7 +170,7 @@ async function SubmissionsTable({ id }: { id: number }) {
                 );
               })}
               <TableHead className="text-muted-foreground text-right uppercase">
-                Submitted at
+                Enviado em
               </TableHead>
             </TableRow>
           </TableHeader>
@@ -188,6 +190,7 @@ async function SubmissionsTable({ id }: { id: number }) {
                   <TableCell className="text-muted-foreground text-right">
                     {formatDistance(row.submittedAt, new Date(), {
                       addSuffix: true,
+                      locale: ptBR
                     })}
                   </TableCell>
                 </TableRow>

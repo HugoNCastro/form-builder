@@ -4,7 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
 import DesignerContextProvider from "@/components/context/DesignerContext";
-import { env } from '@/env'
+import { env } from "@/env";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -27,22 +27,28 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-      <html lang="en" suppressHydrationWarning>
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-            <DesignerContextProvider>
-              <ThemeProvider
-                attribute="class"
-                defaultTheme="system"
-                enableSystem
-                disableTransitionOnChange
-              >
-                {children}
-                <Toaster />
-              </ThemeProvider>
-            </DesignerContextProvider>
-        </body>
-      </html>
+    <html lang="en" suppressHydrationWarning>
+      <link
+        rel="icon"
+        href="/logos/banrisul.png"
+        type="image/<generated>"
+        sizes="<generated>"
+      />
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <DesignerContextProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+            <Toaster />
+          </ThemeProvider>
+        </DesignerContextProvider>
+      </body>
+    </html>
   );
 }

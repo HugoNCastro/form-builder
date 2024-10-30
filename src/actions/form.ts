@@ -160,3 +160,16 @@ export async function GetFormWithSubmissions(id: number) {
         },
     })
 }
+
+export async function UnpublishForm(id: number){
+    const updatedForm = await prisma.form.update({
+        where: {
+            id,
+        },
+        data: {
+            published: false,
+        },
+    })
+
+    return updatedForm
+}
