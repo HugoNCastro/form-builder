@@ -1,4 +1,4 @@
-import { SidebarCloseIcon } from "lucide-react";
+import { X } from "lucide-react";
 import { FormElements } from "./FormElements";
 import { useDesigner } from "./hooks/useDesigner";
 import { Button } from "./ui/button";
@@ -8,13 +8,13 @@ export function PropertiesFormSidebar() {
   const { selectedElement, setSelectedElement } = useDesigner();
   if (!selectedElement) return null;
 
-  const PropertiesFrom =
+  const PropertiesForm =
     FormElements[selectedElement?.type].propertiesComponent;
 
   return (
     <div className="flex flex-col p-2">
       <div className="flex justify-between items-center">
-        <p className="text-sm text-foreground/70">Elements properties</p>
+        <p className="text-sm text-foreground/70">Propriedades: </p>
         <Button
           size={"icon"}
           variant={"ghost"}
@@ -22,11 +22,11 @@ export function PropertiesFormSidebar() {
             setSelectedElement(null);
           }}
         >
-          <SidebarCloseIcon />
+          <X />
         </Button>
       </div>
       <Separator className="mb-4"/>
-      <PropertiesFrom elementInstance={selectedElement} />
+      <PropertiesForm elementInstance={selectedElement} />
     </div>
   );
 }

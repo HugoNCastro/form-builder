@@ -50,26 +50,54 @@ export function CreateFormButton() {
   });
 
   const [campaigns, setCampaings] = useState<CampaignProps[]>([]);
-  const [selectedCampaign, setSelectedCampaign] = useState({} as CampaignProps);
   const [mailing, setMailing] = useState<MailingProps[]>([]);
 
+  const campaignSelect = form.watch('campaign')
+
   async function onSubmit(values: formSchemaType) {
-    try {
-      const formId = await CreateForm(values);
+    const filteredCampaign = campaigns.find(campaign => campaign.ds_campanha === values.campaign)
+    const filteredMailing = mailing.find(mailing => mailing.ds_campanha_arquivo === values.mailing)
+
+    if (filteredCampaign && filteredMailing) {
+      try {
+        const formId = await CreateForm({
+          name: values.name,
+          description: values.description,
+          campaign: values.campaign,
+          mailing: values.mailing,
+          campaignId: String(filteredCampaign.cd_campanha),
+          mailingId: String(filteredMailing.cd_campanha_arquivo),
+          author: 'Teste', // TODO: Obter dado do contexto de user
+          authorAccount: '500500' // TODO: Obter dado do contexto de user
+        });
+
+        toast({
+          type: "background",
+          title: "Enquete criada com sucesso",
+          description: "Você será direcionado para parte de ediçào",
+          variant: "default",
+        });
+
+        router.push(`/builder/${formId}`);
+      } catch {
+
+        toast({
+          type: "background",
+          title: "Não foi possível criar a enquete.",
+          description: "Por favor, tente novamente.",
+          variant: "destructive",
+        });
+
+      }
+    } else {
 
       toast({
         type: "background",
-        value: "Enquete criada com sucesso",
-        variant: "default",
-      });
-
-      router.push(`/builder/${formId}`);
-    } catch {
-      toast({
-        type: "background",
-        value: "Não foi possível criar a enquete. Por favor, tente novamente.",
+        value: "Erro interno",
+        description: "Por favor, retorne a página principal e tente novamente.",
         variant: "destructive",
       });
+
     }
   }
 
@@ -78,18 +106,6 @@ export function CreateFormButton() {
       setMailing(result);
     });
   }
-
-  const onChangeCampaign = (value: string) => {
-    const findCampaign = campaigns.find(
-      (campaing) => campaing.ds_campanha === value
-    );
-
-    if (!findCampaign) {
-      throw new Error("Campanha não encontrada");
-    }
-
-    setSelectedCampaign(findCampaign);
-  };
 
   useEffect(() => {
     listCampaignsAction().then((e) => {
@@ -100,15 +116,16 @@ export function CreateFormButton() {
     });
   }, []);
 
-  console.log(form, "form");
-
   useEffect(() => {
-    if (selectedCampaign.cd_campanha) {
-      listMailing(String(selectedCampaign.cd_campanha));
-    }
-  }, [selectedCampaign]);
+    if (campaignSelect) {
+      const filteredCampaign = campaigns.find(campaign => campaign.ds_campanha === campaignSelect)
 
-  console.log(selectedCampaign, 'selectedCampaign')
+      if (filteredCampaign) {
+        listMailing(String(filteredCampaign.cd_campanha));
+      }
+    }
+  }, [campaigns, form, campaignSelect]);
+
 
   return (
     <Dialog>
@@ -166,7 +183,7 @@ export function CreateFormButton() {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Select {...field} onValueChange={onChangeCampaign}>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <SelectTrigger>
                         <SelectValue placeholder="Selecione a campanha" />
                       </SelectTrigger>
@@ -186,14 +203,14 @@ export function CreateFormButton() {
               )}
             />
 
-            {selectedCampaign.cd_campanha && (
+            {form.watch("campaign") && (
               <FormField
                 control={form.control}
                 name="mailing"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Select { ...field }>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <SelectTrigger>
                           <SelectValue placeholder="Selecione o mailing" />
                         </SelectTrigger>
@@ -201,7 +218,7 @@ export function CreateFormButton() {
                           {mailing.map((mailing) => (
                             <SelectItem
                               key={mailing.cd_campanha_arquivo}
-                              value={String(mailing.cd_campanha_arquivo)}
+                              value={mailing.ds_campanha_arquivo}
                             >
                               {mailing.cd_campanha_arquivo} |{" "}
                               {mailing.ds_campanha_arquivo}

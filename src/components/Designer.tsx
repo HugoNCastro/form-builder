@@ -133,13 +133,13 @@ export function Designer() {
         <div
           ref={droppable.setNodeRef}
           className={cn(
-            "bg-background max-w-[920px] h-full m-auto-rounded-xl flex flex-col flex-grow justify-start items-center flex-1 overflow-y-auto",
+            "bg-background max-w-[1020px] lg:w-[1020px] sm:w-[400px] md:w-[600px] h-full m-auto rounded-xl flex flex-col flex-grow justify-start items-center flex-1 overflow-y-auto",
             droppable.isOver && "ring-4 ring-primary ring-inset"
           )}
         >
           {!droppable.isOver && elements.length === 0 && (
             <p className="text-3xl text-muted-foreground flex flex-grow font-bold items-center">
-              Drop here
+              Solte aqui
             </p>
           )}
           {droppable.isOver && elements.length === 0 && (
@@ -234,7 +234,7 @@ function DesignerElementWrapper({ element }: { element: FormElementInstance }) {
           </div>
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse">
             <p className="text-muted-foreground text-sm">
-              Click for properties or drag to move
+              Clique para ver as propriedades ou arraste para mover
             </p>
           </div>
         </>

@@ -3,17 +3,26 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Form {
-  id          Int      @id @default(autoincrement())
-  name        String
-  createAt    DateTime @default(now())
-  published   Boolean  @default(false)
-  description String   @default("")
-  content     String   @default("[]")
+  id               Int      @id @default(autoincrement())
+  name             String
+  campaignId       String   @map("campaign_id")
+  campaignDesc     String   @map("campaign_desc")
+  mailingId        String   @map("mailing_id")
+  mailingDesc      String   @map("mailing_desc")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @default(now()) @map("updated_at")
+  author           String
+  authorAccount    String   @map("author_account")
+  updatedBy        String   @map("updated_by")
+  updatedByAccount String   @map("updated_by_account")
+  published        Boolean  @default(false)
+  description      String   @default("")
+  content          String   @default("[]")
 
   visits      Int @default(0)
   submissions Int @default(0)
@@ -21,6 +30,8 @@ model Form {
   sharedURL String @unique @default(uuid())
 
   FormSubmissions FormSubmissions[]
+
+  @@map("forms")
 }
 
 model FormSubmissions {
@@ -30,4 +41,6 @@ model FormSubmissions {
   form     Form     @relation(fields: [formId], references: [id])
 
   content String
+
+  @@map("form_submissions")
 }
