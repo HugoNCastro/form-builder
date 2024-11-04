@@ -16,6 +16,7 @@ export function FormElementsSidebar() {
         <SidebarButtonElement formElement={FormElements.ParagraphField} />
         <SidebarButtonElement formElement={FormElements.SeparatorField} />
         <SidebarButtonElement formElement={FormElements.SpacerField} />
+        <SidebarButtonElement formElement={FormElements.HeaderField} />
       </div>
 
       <Separator className="my-2" />

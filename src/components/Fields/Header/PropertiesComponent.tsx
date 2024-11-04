@@ -62,7 +62,7 @@ export function PropertiesComponent({
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Título</FormLabel>
+              <FormLabel>Title</FormLabel>
               <FormControl>
                 <Input
                   {...field}

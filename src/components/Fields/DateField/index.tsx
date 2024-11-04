@@ -14,8 +14,8 @@ import { FormComponent } from "./FormComponent";
 const type: ElementsType = "DateField";
 
 const extraAttributes = {
-  label: "Date field",
-  helperText: "Pick a date",
+  label: "Campo data",
+  helperText: "Escolha uma data",
   required: false,
 };
 
@@ -34,7 +34,7 @@ export const DateFieldFormElement: FormElement = {
   }),
   designerButtonElement: {
     icon: Calendar1,
-    label: "Date Field",
+    label: "Data",
   },
   designerComponent: DesignerComponent,
   formComponent: FormComponent,

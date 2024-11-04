@@ -16,7 +16,7 @@ import { FormComponent } from "./FormComponent";
 const type: ElementsType = "ParagraphField";
 
 const extraAttributes = {
-  text: "Text here",
+  text: "Texto aqui",
 };
 
 export const propertiesSchema = z.object({
@@ -38,7 +38,7 @@ export const ParagraphFieldFormElement: FormElement = {
   }),
   designerButtonElement: {
     icon: TextCursorInput,
-    label: "Paragraph Field",
+    label: "Parágrafo",
   },
   designerComponent: DesignerComponent,
   formComponent: FormComponent,

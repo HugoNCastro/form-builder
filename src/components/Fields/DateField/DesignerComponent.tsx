@@ -23,7 +23,7 @@ export function DesignerComponent({
           className="w-full justify-start text-left font-normal"
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          <span>Pick a date</span>
+          <span>Escolha uma data</span>
         </Button>
         {helperText && (
           <p className="text-muted-foreground text-[0.8rem]">{helperText}</p>

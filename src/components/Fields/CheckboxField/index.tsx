@@ -16,8 +16,8 @@ import { PropertiesComponent } from "./PropertiesComponent";
 const type: ElementsType = "CheckboxField";
 
 const extraAttributes = {
-  label: "Checkbox field",
-  helperText: "Helper text",
+  label: "Campo checkbox",
+  helperText: "Texto de ajuda",
   required: false,
 };
 
@@ -42,7 +42,7 @@ export const CheckboxFieldFormElement: FormElement = {
   }),
   designerButtonElement: {
     icon: CheckboxIcon,
-    label: "Checkbox Field",
+    label: "Checkbox",
   },
   designerComponent: DesignerComponent,
   formComponent: FormComponent,

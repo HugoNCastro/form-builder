@@ -1,5 +1,5 @@
 import { useDraggable } from "@dnd-kit/core";
-import { FormElement } from "../FormElements";
+import { FormElement } from "@/components/Form/FormElements";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 

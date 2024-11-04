@@ -16,10 +16,10 @@ import { PropertiesComponent } from "./PropertiesComponent";
 const type: ElementsType = "SelectField";
 
 const extraAttributes = {
-  label: "Select field",
-  helperText: "Helper text",
+  label: "Select",
+  helperText: "Texto de ajuda",
   required: false,
-  placeHolder: "Value here...",
+  placeHolder: "Selecione...",
   options: [],
 };
 
@@ -46,7 +46,7 @@ export const SelectFieldFormElement: FormElement = {
   }),
   designerButtonElement: {
     icon: BoxSelect,
-    label: "Select Field",
+    label: "Select",
   },
   designerComponent: DesignerComponent,
   formComponent: FormComponent,

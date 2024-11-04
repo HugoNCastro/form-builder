@@ -16,8 +16,8 @@ import { FormComponent } from "./FormComponent";
 const type: ElementsType = "NumberField";
 
 const extraAttributes = {
-  label: "Number field",
-  helperText: "Helper text",
+  label: "Campo numérico",
+  helperText: "Texto de ajuda",
   required: false,
   placeHolder: "0",
 };
@@ -44,7 +44,7 @@ export const NumberFieldFormElement: FormElement = {
   }),
   designerButtonElement: {
     icon: SquarePi,
-    label: "Number Field",
+    label: "Número",
   },
   designerComponent: DesignerComponent,
   formComponent: FormComponent,

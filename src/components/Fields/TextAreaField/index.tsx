@@ -14,10 +14,10 @@ import { PropertiesComponent } from "./PropertiesComponent";
 const type: ElementsType = "TextAreaField";
 
 const extraAttributes = {
-  label: "Text area",
-  helperText: "Helper text",
+  label: "Campo descritivo",
+  helperText: "Texto de ajuda",
   required: false,
-  placeHolder: "Value here...",
+  placeHolder: "Texto aqui...",
   rows: 3,
 };
 
@@ -44,7 +44,7 @@ export const TextAreaFieldFormElement: FormElement = {
   }),
   designerButtonElement: {
     icon: NotepadText,
-    label: "TextArea Field",
+    label: "Caixa de texto",
   },
   designerComponent: DesignerComponent,
   formComponent: FormComponent,

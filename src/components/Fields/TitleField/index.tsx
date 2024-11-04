@@ -12,7 +12,7 @@ import { PropertiesComponent } from "./PropertiesComponent";
 const type: ElementsType = "TitleField";
 
 const extraAttributes = {
-  title: "Title field",
+  title: "Título",
 };
 
 export const propertiesSchema = z.object({
@@ -34,7 +34,7 @@ export const TitleFieldFormElement: FormElement = {
   }),
   designerButtonElement: {
     icon: Heading,
-    label: "Title Field",
+    label: "Título",
   },
   designerComponent: DesignerComponent,
   formComponent: FormComponent,

@@ -3,9 +3,9 @@
 import { FormElementInstance } from "@/components/Form/FormElements";
 import { CustomInstance, PropertiesFormSchemaType, propertiesSchema } from ".";
 import { useDesigner } from "@/components/hooks/useDesigner";
-import { Form, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from "@/components/ui/form";
+import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { useEffect } from "react";
@@ -62,7 +62,7 @@ export function PropertiesComponent({
             name="label"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Label</FormLabel>
+                <FormLabel>Enunciado</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
@@ -72,7 +72,7 @@ export function PropertiesComponent({
                   />
                 </FormControl>
                 <FormDescription>
-                  The label of the field <br /> It will displayed above the field
+                  O enunciado do campo. <br /> Será mostrado acima do elemento.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -84,7 +84,7 @@ export function PropertiesComponent({
             name="placeHolder"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>PlaceHolder</FormLabel>
+                <FormLabel>Placeholder</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
@@ -93,7 +93,7 @@ export function PropertiesComponent({
                     }}
                   />
                 </FormControl>
-                <FormDescription>The placeholder of the field</FormDescription>
+                <FormDescription>Placeholder do campo</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -104,7 +104,7 @@ export function PropertiesComponent({
             name="helperText"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Helper text</FormLabel>
+                <FormLabel>Texto de ajuda</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
@@ -114,8 +114,7 @@ export function PropertiesComponent({
                   />
                 </FormControl>
                 <FormDescription>
-                  The helper text of the field. <br /> It will be displayed below
-                  the field.{" "}
+                  Campo de texto de ajuda. <br /> Será mostrado abaixo do elemento.{" "}
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -128,11 +127,10 @@ export function PropertiesComponent({
             render={({ field }) => (
               <FormItem className="flex items-center justify-center rounded-lg border p-3 shadow-sm">
                 <div className="space-y-0.5">
-                  <FormLabel>Required</FormLabel>
+                  <FormLabel>Obrigatório ?</FormLabel>
   
                   <FormDescription>
-                    The helper text of the field. <br /> It will be displayed
-                    below the field.{" "}
+                    Selecione para obrigatoriedade de preenchimento
                   </FormDescription>
                 </div>
                 <FormControl>

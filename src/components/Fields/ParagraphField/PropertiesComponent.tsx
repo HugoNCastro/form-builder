@@ -55,7 +55,7 @@ export function PropertiesComponent({
             name="text"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Text</FormLabel>
+                <FormLabel>Texto</FormLabel>
                 <FormControl>
                   <Input
                     {...field}

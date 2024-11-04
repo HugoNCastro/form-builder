@@ -73,7 +73,7 @@ export function PropertiesComponent({
           name="label"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Label</FormLabel>
+              <FormLabel>Enunciado</FormLabel>
               <FormControl>
                 <Input
                   {...field}
@@ -83,7 +83,7 @@ export function PropertiesComponent({
                 />
               </FormControl>
               <FormDescription>
-                The label of the field <br /> It will displayed above the field
+                Enunciado do campo <br /> Será mostrado acima do elemento
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -95,7 +95,7 @@ export function PropertiesComponent({
           name="placeHolder"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>PlaceHolder</FormLabel>
+              <FormLabel>Placeholder</FormLabel>
               <FormControl>
                 <Input
                   {...field}
@@ -104,7 +104,7 @@ export function PropertiesComponent({
                   }}
                 />
               </FormControl>
-              <FormDescription>The placeholder of the field</FormDescription>
+              <FormDescription>Placeholder do campo</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -115,7 +115,7 @@ export function PropertiesComponent({
           name="helperText"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Helper text</FormLabel>
+              <FormLabel> Texto de ajuda</FormLabel>
               <FormControl>
                 <Input
                   {...field}
@@ -125,8 +125,7 @@ export function PropertiesComponent({
                 />
               </FormControl>
               <FormDescription>
-                The helper text of the field. <br /> It will be displayed below
-                the field.{" "}
+                Texto de ajuda. <br /> Será mostrado abaixo do elemento.{" "}
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -138,7 +137,7 @@ export function PropertiesComponent({
           name="rows"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Rows {form.watch("rows")}</FormLabel>
+              <FormLabel>Linhas {form.watch("rows")}</FormLabel>
               <FormControl>
                 <Slider
                   defaultValue={[field.value]}
@@ -161,11 +160,10 @@ export function PropertiesComponent({
           render={({ field }) => (
             <FormItem className="flex items-center justify-center rounded-lg border p-3 shadow-sm">
               <div className="space-y-0.5">
-                <FormLabel>Required</FormLabel>
+                <FormLabel>Obrigatório ?</FormLabel>
 
                 <FormDescription>
-                  The helper text of the field. <br /> It will be displayed
-                  below the field.{" "}
+                  Selecione para obrigatoriedade de preenchimento
                 </FormDescription>
               </div>
               <FormControl>

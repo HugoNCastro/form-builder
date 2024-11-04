@@ -62,7 +62,7 @@ export function PropertiesComponent({
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>SubTitle</FormLabel>
+              <FormLabel>Subtítulo</FormLabel>
               <FormControl>
                 <Textarea
                   rows={5}
