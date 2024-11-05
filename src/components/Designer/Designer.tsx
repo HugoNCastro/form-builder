@@ -15,7 +15,11 @@ import {
 import { idGenerator } from "@/lib/idGenerator";
 import { DesignerElementWrapper } from "./DesignerElementWrapper";
 
-export function Designer() {
+interface DesignerProps {
+  formId: number
+}
+
+export function Designer({ formId }: DesignerProps) {
   const { elements, addElement, selectedElement, setSelectedElement, removeElement } =
     useDesigner();
 
@@ -92,19 +96,19 @@ export function Designer() {
       //Dropping designer element over a designer element
       const isDraggingDesignerElement = active.data?.current?.isDesignerElement
 
-      const draggingDesignerElementOverAnotherDesignerElement =  isDroppingOverDesignerDropArea && isDraggingDesignerElement
+      const draggingDesignerElementOverAnotherDesignerElement = isDroppingOverDesignerDropArea && isDraggingDesignerElement
 
-      if(draggingDesignerElementOverAnotherDesignerElement){
+      if (draggingDesignerElementOverAnotherDesignerElement) {
         const activeId = active.data?.current?.elementId
         const overId = over.data?.current?.elementId
 
         const activeElementIndex = elements.findIndex(element => element.id === activeId)
         const overElementIndex = elements.findIndex(element => element.id === overId)
-        
-        if(activeElementIndex === -1 || overElementIndex === -1){
+
+        if (activeElementIndex === -1 || overElementIndex === -1) {
           throw new Error('Element not found')
         }
-        const activeElement = {...elements[activeElementIndex]}
+        const activeElement = { ...elements[activeElementIndex] }
         removeElement(activeId)
 
         let indexForNewElement = overElementIndex; // assume element in top half
@@ -146,7 +150,7 @@ export function Designer() {
           {elements.length > 0 && (
             <div className="flex flex-col w-full gap-2 p-4">
               {elements.map((element) => (
-                <DesignerElementWrapper key={element.id} element={element} />
+                <DesignerElementWrapper key={element.id} element={element} formId={formId}/>
               ))}
             </div>
           )}

@@ -62,8 +62,8 @@ export function PropertiesComponent({
     });
 
     toast({
-      title: "Success",
-      description: "Properties saved successfully",
+      title: "Sucesso",
+      description: "Propriedades salvas com sucesso",
     });
 
     setSelectedElement(null);

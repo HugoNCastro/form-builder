@@ -1,11 +1,34 @@
+'use client'
+
 import { Eye } from "lucide-react";
 import { Button } from "../ui/button";
 import { useDesigner } from "../hooks/useDesigner";
 import { Dialog, DialogTrigger, DialogContent } from "../ui/dialog";
 import { FormElements } from "../Form/FormElements";
+import { useEffect, useState } from "react";
+import { Form } from "@prisma/client";
+import { GetFormById } from "@/actions/form";
 
-export function PreviewDialogButton() {
+interface PreviewDialogButtonProps {
+  formId: number
+}
+
+export function PreviewDialogButton({formId}: PreviewDialogButtonProps) {
   const { elements } = useDesigner();
+  const [formInfo, setFormInfo] = useState<Form | undefined>(undefined)
+
+  async function FetchForms() {
+    const fetchedForms = await GetFormById(formId);
+    if(fetchedForms) {
+      setFormInfo(fetchedForms);
+    } else {
+      setFormInfo(undefined)
+    }
+  }
+
+  useEffect(() => {
+    FetchForms()
+  }, [])
 
   return (
     <Dialog>
@@ -29,7 +52,7 @@ export function PreviewDialogButton() {
               {elements.map((element) => {
                 const FormComponent = FormElements[element.type].formComponent
 
-                return <FormComponent key={element.id} elementInstance={element}/>
+                return <FormComponent key={element.id} elementInstance={element} formInfo={formInfo}/>
               })}
             </div>
         </div>

@@ -3,7 +3,7 @@ import { FormLinkShare } from "@/components/Form/FormLinkShare";
 import { VisitButton } from "@/components/Buttons/VisitButton";
 
 import { LucideView } from "lucide-react";
-import { ElementsType, FormElementInstance } from "@/components/FormElements";
+import { ElementsType, FormElementInstance } from "@/components/Form/FormElements";
 import {
   Table,
   TableBody,

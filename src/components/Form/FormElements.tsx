@@ -1,6 +1,7 @@
+import { Form } from "@prisma/client";
 import { CheckboxFieldFormElement } from "../Fields/CheckboxField";
 import { DateFieldFormElement } from "../Fields/DateField";
-import { HeaderFieldFormElement } from "../Fields/Header";
+import { HeaderFieldFormElement } from "../Fields/HeaderField";
 import { NumberFieldFormElement } from "../Fields/NumberField";
 import { ParagraphFieldFormElement } from "../Fields/ParagraphField";
 import { SelectFieldFormElement } from "../Fields/SelectField";
@@ -39,12 +40,14 @@ export type FormElement = {
 
   designerComponent: React.FC<{
     elementInstance: FormElementInstance;
+    formInfo?: Form | undefined
   }>;
   formComponent: React.FC<{
     elementInstance: FormElementInstance;
     submitValue?: SubmitFunction;
     isInvalid?: boolean;
     defaultValue?: string;
+    formInfo?: Form | undefined
   }>;
   propertiesComponent: React.FC<{
     elementInstance: FormElementInstance;
