@@ -5,7 +5,7 @@ import { CustomInstance, PropertiesFormSchemaType, propertiesSchema } from ".";
 import { useDesigner } from "@/components/hooks/useDesigner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import {
   Form,
   FormControl,
@@ -15,7 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { ColorPicker } from "@/components/ColorPicker";
-import { Palette } from "lucide-react";
+import { LoaderCircle, Palette } from "lucide-react";
 import { ColorHeaderContext } from "@/components/context/ColorHeaderContext";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
@@ -68,6 +68,8 @@ export function PropertiesComponent({
     });
   }
 
+  console.log(form.formState.isSubmitting, 'submitting')
+
   return (
     <Form {...form}>
       <form
@@ -78,17 +80,19 @@ export function PropertiesComponent({
           control={form.control}
           name="colorHeader"
           render={({ field }) => (
-            <FormItem className="flex gap-2 items-center">
+            <FormItem className="flex gap-2 items-baseline">
               <FormLabel>Escolha a cor do cabeçalho: </FormLabel>
-              <FormControl>
-                <ColorPicker {...field} icon={<Palette />} />
-              </FormControl>
-              <FormMessage />
+                <FormControl>
+                  <ColorPicker {...field} icon={<Palette />} />
+                </FormControl>
+                <FormMessage />
             </FormItem>
           )}
         />
-        <Button className="w-full" type="submit">
-          Salvar
+        <p className="text-muted-foreground text-sm">Após escolha, clique abaixo para salvar</p>
+        <Button className="w-full" type="submit" disabled={form.formState.isSubmitting}>
+          {form.formState.isSubmitting && <LoaderCircle className="animate-spin"/>}
+          {!form.formState.isSubmitting && <>Salvar</>}
         </Button>
       </form>
     </Form >

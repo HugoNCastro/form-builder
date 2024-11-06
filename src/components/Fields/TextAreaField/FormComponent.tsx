@@ -38,7 +38,7 @@ export function FormComponent({
         {required && "*"}
       </Label>
       <Textarea
-        className={cn(error && "border-red-500")}
+        className={cn(error && "border-red-500", "min-h-40 max-h-80 overflow-y-auto")}
         rows={rows}
         placeholder={placeHolder}
         onChange={(e) => setValue(e.target.value)}
