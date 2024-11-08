@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import { FormElementInstance } from "@/components/Form/FormElements";
 import { useDesigner } from "@/components/hooks/useDesigner";
