@@ -1,18 +1,21 @@
 "use client";
 
-import { CircleCheckIcon, Pen } from "lucide-react";
+import { CircleCheckIcon, Loader } from "lucide-react";
 import { FormElementInstance, FormElements } from "../Form/FormElements";
 import { Button } from "../ui/button";
 import { useCallback, useRef, useState, useTransition } from "react";
 import { toast } from "@/hooks/use-toast";
 import { SubmitForm } from "@/actions/form";
+import { AttemptData } from "@/types";
 
 export function FormSubmitComponent({
   formUrl,
   content,
+  attemptData
 }: {
   content: FormElementInstance[];
   formUrl: string;
+  attemptData: AttemptData
 }) {
   const formValues = useRef<{ [key: string]: string }>({});
   const formErrors = useRef<{ [key: string]: boolean }>({});
@@ -108,6 +111,7 @@ export function FormSubmitComponent({
               submitValue={submitValue}
               isInvalid={formErrors.current[element.id]}
               defaultValue={formValues.current[element.id]}
+              attemptData={attemptData}
             />
           );
         })}
@@ -126,8 +130,7 @@ export function FormSubmitComponent({
           )}
           {pending && (
             <>
-              <Pen className="animate-spin" />
-              {/* Change icon to spinner */}
+              <Loader className="animate-spin" />
             </>
           )}
         </Button>

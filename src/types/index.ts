@@ -30,3 +30,19 @@ export type CampaignProps = {
     cd_campanha: string
     ds_campanha_arquivo: string
   }
+
+  export type AttemptData = {
+        cd_agente: number,
+        ds_campanha_arquivo: string,
+        ds_campanha: string,
+        js_segmentacao: string,
+        nu_telefone: string,
+        sg_cifra: string,
+        cd_mailing: number,
+        cd_campanha: number,
+        id_contato_crm: unknown,
+        cd_telefone_complementar: number,
+        cd_servico: number,
+        cd_tentativa_mailing: number,
+        nu_ddd: string 
+  }

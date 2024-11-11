@@ -11,6 +11,7 @@ import { SubTitleFieldFormElement } from "../Fields/SubtitleField";
 import { TextAreaFieldFormElement } from "../Fields/TextAreaField";
 import { TextFieldFormElement } from "../Fields/TextField";
 import { TitleFieldFormElement } from "../Fields/TitleField";
+import { AttemptData } from "@/types";
 
 export type ElementsType =
   | "TextField"
@@ -48,6 +49,7 @@ export type FormElement = {
     isInvalid?: boolean;
     defaultValue?: string;
     formInfo?: Form | undefined
+    attemptData?: AttemptData
   }>;
   propertiesComponent: React.FC<{
     elementInstance: FormElementInstance;

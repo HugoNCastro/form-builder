@@ -9,10 +9,10 @@ export default function ErrorPage({ error }: { error: Error }) {
 
   return (
     <div className="flex w-full h-full flex-col items-center justify-center">
-      <h2 className="text-destructive text-4xl">Something went wrong!</h2>
+      <h2 className="text-destructive text-4xl">Algo deu errado</h2>
       <Button asChild>
         <Link href={'/'}>
-         Go back to home 
+         Página inicial
         </Link>
       </Button>
     </div>

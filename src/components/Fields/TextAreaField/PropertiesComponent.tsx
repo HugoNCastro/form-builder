@@ -5,7 +5,7 @@ import { CustomInstance, PropertiesFormSchemaType, propertiesSchema } from ".";
 import { useDesigner } from "@/components/hooks/useDesigner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Form,
   FormControl,
@@ -18,6 +18,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
+import { TextAreaWithParam } from "@/components/TextAreaWithParam";
+import { useParams } from "next/navigation";
+import prisma from "@prisma/client";
+import { GetFormById } from "@/actions/form";
 
 export function PropertiesComponent({
   elementInstance,
@@ -25,8 +29,10 @@ export function PropertiesComponent({
   elementInstance: FormElementInstance;
 }) {
   const element = elementInstance as CustomInstance;
-
   const { updateElement } = useDesigner();
+  const params = useParams<{ id: string }>();
+  const [formInfo, setFormInfo] = useState<prisma.Form | undefined>(undefined);
+
 
   const form = useForm<PropertiesFormSchemaType>({
     resolver: zodResolver(propertiesSchema),
@@ -59,6 +65,20 @@ export function PropertiesComponent({
     });
   }
 
+  async function FetchForms() {
+    const fetchedForms = await GetFormById(Number(params.id));
+    if (fetchedForms) {
+      setFormInfo(fetchedForms);
+    } else {
+      setFormInfo(undefined);
+    }
+  }
+
+  useEffect(() => {
+    FetchForms();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <Form {...form}>
       <form
@@ -75,8 +95,11 @@ export function PropertiesComponent({
             <FormItem>
               <FormLabel>Enunciado</FormLabel>
               <FormControl>
-                <Input
-                  {...field}
+              <TextAreaWithParam
+                  name="label"
+                  value={field.value}
+                  onChange={field.onChange}
+                  mailingId={formInfo?.mailingId}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") e.currentTarget.blur();
                   }}
@@ -115,7 +138,7 @@ export function PropertiesComponent({
           name="helperText"
           render={({ field }) => (
             <FormItem>
-              <FormLabel> Texto de ajuda</FormLabel>
+              <FormLabel>Texto de ajuda</FormLabel>
               <FormControl>
                 <Input
                   {...field}
