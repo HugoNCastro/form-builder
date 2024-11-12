@@ -10,7 +10,6 @@ export function parseMentions(text: string, data: AttemptData): string {
   
       return text.replace(/@(\w+)/g, (_, key) => {
         const upperKey = key.toUpperCase();
-        console.log(`Key: ${upperKey}, Value: ${parsedDataUpperCaseKeys[upperKey]}`, 'log');
         
         return parsedDataUpperCaseKeys[upperKey] !== undefined 
           ? String(parsedDataUpperCaseKeys[upperKey]) 

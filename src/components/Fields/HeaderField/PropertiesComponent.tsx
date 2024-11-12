@@ -68,8 +68,6 @@ export function PropertiesComponent({
     });
   }
 
-  console.log(form.formState.isSubmitting, 'submitting')
-
   return (
     <Form {...form}>
       <form
