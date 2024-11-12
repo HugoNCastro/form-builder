@@ -173,3 +173,13 @@ export async function UnpublishForm(id: number){
 
     return updatedForm
 }
+
+export async function DeleteForm(id: number){
+    const updatedForm = await prisma.form.delete({
+        where: {
+            id,
+        },
+    })
+
+    return updatedForm
+}

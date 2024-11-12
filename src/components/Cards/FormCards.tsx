@@ -18,13 +18,26 @@ export function FormCards() {
   }, []);
 
   const handleUnpublish = (updatedForm: Form) => {
-    setForms((prevForms) => prevForms.map(form => form.id === updatedForm.id ? updatedForm : form));
-};
+    setForms((prevForms) =>
+      prevForms.map((form) => (form.id === updatedForm.id ? updatedForm : form))
+    );
+  };
+
+  const handleDelete = (deletedFormId: number) => {
+    setForms((prevForms) => prevForms.filter((form) => form.id !== deletedFormId));
+  };
 
   return (
     <>
       {forms.map((form) => {
-        return <FormCard key={form.id} form={form} onUnpublish={handleUnpublish} />;
+        return (
+          <FormCard
+            key={form.id}
+            form={form}
+            onUnpublish={handleUnpublish}
+            onDelete={() => handleDelete(form.id)}
+          />
+        );
       })}
     </>
   );

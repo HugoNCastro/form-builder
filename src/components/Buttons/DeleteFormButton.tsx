@@ -1,5 +1,8 @@
-import { Pen, SendIcon } from "lucide-react";
+"use client";
+
+import { Loader, Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
+import { DeleteForm } from "@/actions/form";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,25 +13,30 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "../ui/alert-dialog";
-
-import { toast } from "@/hooks/use-toast";
-
 import { useTransition } from "react";
-import { PublishForm } from "@/actions/form";
+import { toast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 
-export function PublishFormButton({ id }: { id: number }) {
+interface DeleteFormButtonProps {
+  id: number;
+  onDelete: () => void;
+}
+
+export function DeleteFormButton({ id, onDelete }: DeleteFormButtonProps) {
   const [loading, startTransition] = useTransition();
   const router = useRouter();
 
-  async function publishForm() {
+  async function handleDelete() {
     try {
-      await PublishForm(id);
+      await DeleteForm(id);
 
       toast({
         title: "Sucesso",
-        description: "Sua enquete está disponível para preenchimento",
+        description: "Seu formulário foi excluído",
       });
+
+      onDelete()
+
       router.refresh();
     } catch {
       toast({
@@ -44,23 +52,21 @@ export function PublishFormButton({ id }: { id: number }) {
       <AlertDialogTrigger asChild>
         <Button
           variant={"outline"}
-          className="gap-2 text-white bg-gradient-to-r from-indigo-400 to-cyan-400"
+          className="gap-2 text-black w-full dark:text-white bg-red-500 hover:bg-red-600"
         >
-          Publicar
-          <SendIcon className="h-4 w-4" />
+          Deletar formulário
+          <Trash2 className="h-4 w-4" />
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogTitle>
           Você tem certeza ?
           <AlertDialogDescription>
-            Essa ação poderá ser alterada posteriormente. 
-            {/* TODO: Fazer com que a enquete seja salva como rascunho para habilitar edição */}
+            Essa ação não poderá ser desfeita.
             <br />
             <br />
             <span className="font-medium">
-              Após publicar essa enquete ela ficará disponível para
-              preenchimento.
+              Após deletar esse formulário, ele não ficará mais disponível
             </span>
           </AlertDialogDescription>
         </AlertDialogTitle>
@@ -70,12 +76,11 @@ export function PublishFormButton({ id }: { id: number }) {
             disabled={loading}
             onClick={(event) => {
               event.preventDefault();
-              startTransition(publishForm);
+              startTransition(handleDelete);
             }}
-            className="text-white"
+            className="text-white bg-red-500 hover:bg-red-600"
           >
-            Prosseguir {loading && <Pen className="animate-spin" />}
-            {/* Change icon to spinner */}
+            Prosseguir {loading && <Loader className="animate-spin" />}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

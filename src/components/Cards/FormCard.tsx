@@ -14,13 +14,16 @@ import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { UnpublishFormButton } from "../Buttons/UnpublishFormButton";
+import { DeleteFormButton } from "../Buttons/DeleteFormButton";
 
 export function FormCard({
   form,
   onUnpublish,
+  onDelete
 }: {
   form: Form;
   onUnpublish: (updatedForm: Form) => void;
+  onDelete: () => void;
 }) {
   return (
     <Card>
@@ -52,7 +55,7 @@ export function FormCard({
       </CardContent>
       <CardFooter className="flex flex-col">
         {form.published && (
-          <Button asChild className="w-full mt-2 text-md gap-4">
+          <Button asChild className="text-black dark:text-white w-full mt-2 text-md gap-4">
             <Link href={`/forms/${form.id}`}>
               Visualizar interações
               <ArrowRightIcon />
@@ -63,16 +66,15 @@ export function FormCard({
           <UnpublishFormButton id={form.id} onUnpublish={onUnpublish} />
         )}
         {!form.published && (
-          <Button
-            asChild
-            variant={"secondary"}
-            className="w-full mt-2 text-md gap-4"
-          >
-            <Link href={`/builder/${form.id}`}>
-              Editar enquete
-              <Edit />
-            </Link>
-          </Button>
+          <div className="w-full mt-2 text-md">
+            <Button asChild variant={"secondary"} className="w-full">
+              <Link href={`/builder/${form.id}`}>
+                Editar enquete
+                <Edit />
+              </Link>
+            </Button>
+            <DeleteFormButton id={form.id} onDelete={onDelete}/>
+          </div>
         )}
       </CardFooter>
     </Card>
