@@ -9,17 +9,21 @@ import { useEffect, useState } from "react";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
+import { AttemptData } from "@/types";
+import { parseMentions } from "@/utils/parseMentions";
 
 export function FormComponent({
   elementInstance,
   submitValue,
   isInvalid,
   defaultValue,
+  attemptData
 }: {
   elementInstance: FormElementInstance;
   submitValue?: SubmitFunction;
   isInvalid?: boolean;
   defaultValue?: string;
+  attemptData?: AttemptData;
 }) {
   const element = elementInstance as CustomInstance;
   const { helperText, label, placeHolder, required, rows } =
@@ -34,11 +38,14 @@ export function FormComponent({
   return (
     <div className="flex flex-col gap-2 w-full">
       <Label className={cn(error && "text-red-500")}>
-        {label}
+        {parseMentions(label, attemptData || ({} as AttemptData))}
         {required && "*"}
       </Label>
       <Textarea
-        className={cn(error && "border-red-500", "min-h-40 max-h-80 overflow-y-auto")}
+        className={cn(
+          error && "border-red-500",
+          "min-h-40 max-h-80 overflow-y-auto"
+        )}
         rows={rows}
         placeholder={placeHolder}
         onChange={(e) => setValue(e.target.value)}

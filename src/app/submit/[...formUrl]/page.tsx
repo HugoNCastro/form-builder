@@ -8,12 +8,12 @@ export default async function SubmitPage({
   params
 }: {
   params: {
-    formUrl: string;
-    cd_tentativa: string
-  };
+    formUrl: Array<string>
+  }
 }) {
-  const form = await GetFormContentByUrl(params.formUrl)
-  const attemptData: Array<AttemptData> = await GetUserDataByAttempt(params.cd_tentativa)
+  const form = await GetFormContentByUrl(params.formUrl[0])
+  const attemptData: Array<AttemptData> = await GetUserDataByAttempt(params.formUrl[1])
+
 
   if(!form) {
     throw new Error("Form not found");
@@ -22,6 +22,6 @@ export default async function SubmitPage({
   const formContent = JSON.parse(form.content) as FormElementInstance[]
 
   return (
-    <FormSubmitComponent formUrl={params.formUrl} content={formContent} attemptData={attemptData[0]}/>
+    <FormSubmitComponent formUrl={params.formUrl[0]} content={formContent} attemptData={attemptData[0]}/>
   );
 }
