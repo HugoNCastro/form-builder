@@ -5,10 +5,17 @@ import { FormCards } from "@/components/Cards/FormCards";
 import { FormCardSkeleton } from "@/components/Cards/FormCardSkeleton";
 import { CardStatsWrapper } from "@/components/Cards/CardStatsWrapper";
 import { StatsCards } from "@/components/Cards/StatsCards";
+import { HomeWrapper } from "@/components/HomeWrapper";
 
-export default function Home() {
+interface HomeProps {
+  params: {
+    agentID: string
+  }
+}
+
+export default function Home({ params }: HomeProps) {
   return (
-    <div className="container pt-4">
+    <HomeWrapper agentID={params.agentID}>
       <Suspense fallback={<StatsCards loading={true} />}>
         <CardStatsWrapper />
       </Suspense>
@@ -25,7 +32,7 @@ export default function Home() {
           <FormCards />
         </Suspense>
       </div>
-    </div>
+    </HomeWrapper>
   );
 }
 
