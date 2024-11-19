@@ -12,7 +12,8 @@ export default async function SubmitPage({
   }
 }) {
   const form = await GetFormContentByUrl(params.formUrl[0])
-  const attemptData: Array<AttemptData> = await GetUserDataByAttempt(params.formUrl[1])
+  const agentID = params.formUrl[1]
+  const attemptData: Array<AttemptData> = await GetUserDataByAttempt(params.formUrl[2])
 
 
   if(!form) {
@@ -22,6 +23,6 @@ export default async function SubmitPage({
   const formContent = JSON.parse(form.content) as FormElementInstance[]
 
   return (
-    <FormSubmitComponent formUrl={params.formUrl[0]} content={formContent} attemptData={attemptData[0]}/>
+    <FormSubmitComponent formUrl={params.formUrl[0]} content={formContent} attemptData={attemptData[0]} agentID={agentID}/>
   );
 }

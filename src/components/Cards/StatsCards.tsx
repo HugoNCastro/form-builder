@@ -15,7 +15,7 @@ interface StatsCardProps {
         <StatsCard
           title="Total de visitas"
           icon={<LucideView className="text-blue-600" />}
-          helperText="Total de visitas das enquetes cadastradas"
+          helperText="Total de visitas dos formulários cadastrados"
           value={data?.visits.toLocaleString() || ""}
           loading={loading}
           className="shadow-md shadow-blue-600"
@@ -24,7 +24,7 @@ interface StatsCardProps {
         <StatsCard
           title="Total de respostas"
           icon={<LucideView className="text-yellow-600" />}
-          helperText="Total de respostas das enquetes cadastradas"
+          helperText="Total de respostas dos formulários cadastrados"
           value={data?.submissions.toLocaleString() || ""}
           loading={loading}
           className="shadow-md shadow-yellow-600"

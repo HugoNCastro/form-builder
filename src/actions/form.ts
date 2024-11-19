@@ -131,7 +131,7 @@ export async function GetFormContentByUrl(formUrl: string) {
     })
 }
 
-export async function SubmitForm(formUrl: string, content: string) {
+export async function SubmitForm(formUrl: string, content: string, agent: string) {
     return await prisma.form.update({
         data: {
             submissions: {
@@ -139,7 +139,8 @@ export async function SubmitForm(formUrl: string, content: string) {
             },
             FormSubmissions: {
                 create: {
-                    content
+                    content, 
+                    agent
                 }
             }
         },
@@ -182,4 +183,16 @@ export async function DeleteForm(id: number){
     })
 
     return updatedForm
+}
+
+export async function GetFormSubmissionsByAgent(agentID: string) {
+    return prisma.formSubmissions.findMany({
+        where: {
+            agent: agentID
+        },
+        include: {
+            form: true
+        }
+    })
+
 }

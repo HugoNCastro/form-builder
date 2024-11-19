@@ -18,7 +18,7 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: `Enquetes | ${env.NEXT_PUBLIC_CLIENT_NAME}`,
+  title: `Formulários | ${env.NEXT_PUBLIC_CLIENT_NAME}`,
 };
 
 export default function RootLayout({

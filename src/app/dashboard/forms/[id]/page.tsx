@@ -12,12 +12,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { format, formatDistance } from "date-fns";
-import { ReactNode } from "react";
-import { Badge } from "@/components/ui/badge";
-import { Checkbox } from "@/components/ui/checkbox";
+import { formatDistance } from "date-fns";
 import { StatsCard } from "@/components/Cards/StatsCard";
 import { ptBR } from "date-fns/locale";
+import { RowCell } from "@/components/RowCell";
 
 export default async function FormDetailPage({
   params,
@@ -157,7 +155,7 @@ async function SubmissionsTable({ id }: { id: number }) {
 
   return (
     <>
-      <h1 className="text-2xl font-bold my-4">Submissions</h1>
+      <h1 className="text-2xl font-bold my-4">Respostas</h1>
       <div>
         <Table>
           <TableHeader>
@@ -203,22 +201,4 @@ async function SubmissionsTable({ id }: { id: number }) {
   );
 }
 
-function RowCell({ type, value }: { type: ElementsType; value: string }) {
-  let node: ReactNode = value;
 
-  switch (type) {
-    case "DateField":
-      if(!value) break
-      const date = new Date(value);
-      node = <Badge variant={"outline"}>{format(date, "dd/MM/yyyy")}</Badge>
-      break;
-    case "CheckboxField":
-      const checked = value === "true" ? true : false;
-      node = <Checkbox checked={checked} disabled />
-      break
-    default:
-      break;
-  }
-
-  return <TableCell>{node}</TableCell>;
-}

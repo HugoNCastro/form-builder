@@ -56,7 +56,7 @@ export function FormCard({
       <CardFooter className="flex flex-col">
         {form.published && (
           <Button asChild className="text-black dark:text-white w-full mt-2 text-md gap-4">
-            <Link href={`/forms/${form.id}`}>
+            <Link href={`/dashboard/forms/${form.id}`}>
               Visualizar interações
               <ArrowRightIcon />
             </Link>
@@ -68,7 +68,7 @@ export function FormCard({
         {!form.published && (
           <div className="w-full mt-2 text-md">
             <Button asChild variant={"secondary"} className="w-full">
-              <Link href={`/builder/${form.id}`}>
+              <Link href={`/dashboard/builder/${form.id}`}>
                 Editar enquete
                 <Edit />
               </Link>

@@ -43,6 +43,7 @@ import {
   listMailingsAssociateToCampaign,
 } from "@/actions/dialer";
 import { CampaignProps, MailingProps } from "@/types";
+import { useAgent } from "../providers/AgentProvider";
 
 export function CreateFormButton() {
   const router = useRouter();
@@ -52,6 +53,7 @@ export function CreateFormButton() {
 
   const [campaigns, setCampaings] = useState<CampaignProps[]>([]);
   const [mailing, setMailing] = useState<MailingProps[]>([]);
+  const { agent } = useAgent()
 
   const selectedCampaign = form.watch('campaign') || undefined
 
@@ -69,8 +71,8 @@ export function CreateFormButton() {
           mailing: values.mailing,
           campaignId: String(filteredCampaign.cd_campanha),
           mailingId: String(filteredMailing.cd_campanha_arquivo),
-          author: 'Teste', // TODO: Obter dado do contexto de user
-          authorAccount: '500500' // TODO: Obter dado do contexto de user
+          author: agent[0].nm_agente, 
+          authorAccount: String(agent[0].cd_agente),
         });
 
         toast({
@@ -80,7 +82,7 @@ export function CreateFormButton() {
           variant: "default",
         });
 
-        router.push(`/builder/${formId}`);
+        router.push(`/dashboard/builder/${formId}`);
       } catch {
 
         toast({
