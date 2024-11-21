@@ -96,7 +96,7 @@ export function FormSubmitComponent({
 
       toast({
         title: "Success",
-        description: "Enquete enviada com sucesso !",
+        description: "Formulário respondido com sucesso !",
       });
     } catch {
       toast({
@@ -114,7 +114,7 @@ export function FormSubmitComponent({
           key={renderKey}
           className="max-w-[620px] flex flex-col gap-4 flex-grow bg-background w-full p-8 overflow-y-auto border shadow-xl shadow-blue-700 rounded"
         >
-          <h1 className="text-2xl font-bold">Enquete enviada com sucesso !</h1>
+          <h1 className="text-2xl font-bold">Formulário enviado com sucesso !</h1>
           <p className="text-muted-foreground">
             Você pode fechar essa página agora.
           </p>

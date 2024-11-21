@@ -59,7 +59,7 @@ export default async function FormDetailPage({
         <StatsCard
           title="Total de visitas"
           icon={<LucideView className="text-blue-600" />}
-          helperText="Total de visitas dessa enquete"
+          helperText="Total de visitas dessa formulário"
           value={visits.toLocaleString() || ""}
           loading={false}
           className="shadow-md shadow-blue-600"
@@ -68,7 +68,7 @@ export default async function FormDetailPage({
         <StatsCard
           title="Total de respostas"
           icon={<LucideView className="text-yellow-600" />}
-          helperText="Total de respostas cadastradas dessa enquete."
+          helperText="Total de respostas cadastradas dessa formulário."
           value={submissions.toLocaleString() || ""}
           loading={false}
           className="shadow-md shadow-yellow-600"
@@ -77,7 +77,7 @@ export default async function FormDetailPage({
         <StatsCard
           title="Envio de formulário"
           icon={<LucideView className="text-green-600" />}
-          helperText="Visitas que resultaram em envio de respostas dessa enquete"
+          helperText="Visitas que resultaram em envio de respostas desse formulário"
           value={submissionRate.toLocaleString() + "%" || ""}
           loading={false}
           className="shadow-md shadow-green-600"

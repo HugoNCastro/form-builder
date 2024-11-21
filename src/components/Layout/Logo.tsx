@@ -9,7 +9,7 @@ import { useAgent } from "../providers/AgentProvider";
 export function Logo() {
   const { agent } = useAgent();
 
-  const verifyPermissions = agent.map((item) => item.nm_action === "edit")
+  const verifyPermissions = agent.some((item) => item.nm_action === "edit")
     ? "/dashboard"
     : `/history?agent=${String(agent[0].cd_agente)}`;
 

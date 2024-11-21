@@ -44,7 +44,7 @@ export function PreviewDialogButton({formId}: PreviewDialogButtonProps) {
             Pré-visualização
           </p>
           <p className="text-sm text-muted-foreground">
-            Sua enquete será mostrada assim
+            Seu formulário será mostrado assim
           </p>
         </div>
         <div className="bg-accent flex flex-col flex-grow items-center justify-center p-4 bg-[url(/paper.svg)] dark:bg-[url(/paper-dark.svg)] overflow-y-auto">

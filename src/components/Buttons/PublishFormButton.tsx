@@ -27,7 +27,7 @@ export function PublishFormButton({ id }: { id: number }) {
 
       toast({
         title: "Sucesso",
-        description: "Sua enquete está disponível para preenchimento",
+        description: "Seu formulário está disponível para preenchimento",
       });
       router.refresh();
     } catch {
@@ -55,11 +55,10 @@ export function PublishFormButton({ id }: { id: number }) {
           Você tem certeza ?
           <AlertDialogDescription>
             Essa ação poderá ser alterada posteriormente. 
-            {/* TODO: Fazer com que a enquete seja salva como rascunho para habilitar edição */}
             <br />
             <br />
             <span className="font-medium">
-              Após publicar essa enquete ela ficará disponível para
+              Após publicar esse formulário, ele ficará disponível para
               preenchimento.
             </span>
           </AlertDialogDescription>

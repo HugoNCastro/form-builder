@@ -77,7 +77,7 @@ export function CreateFormButton() {
 
         toast({
           type: "background",
-          title: "Enquete criada com sucesso",
+          title: "Formulário criado com sucesso",
           description: "Você será direcionado para parte de ediçào",
           variant: "default",
         });
@@ -87,7 +87,7 @@ export function CreateFormButton() {
 
         toast({
           type: "background",
-          title: "Não foi possível criar a enquete.",
+          title: "Não foi possível criar o formulário.",
           description: "Por favor, tente novamente.",
           variant: "destructive",
         });
@@ -141,14 +141,14 @@ export function CreateFormButton() {
         >
           <PlusCircle className="h-12 w-12 text-muted-foreground group-hover:text-primary"/>
           <p className="font-bold text-xl text-muted-foreground group-hover:text-primary ">
-            Criar nova enquete
+            Criar novo formulário
           </p>
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Criar enquete</DialogTitle>
-          <DialogDescription>Crie uma nova enquete</DialogDescription>
+          <DialogTitle>Criar formulário</DialogTitle>
+          <DialogDescription>Crie um novo formulário</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">

@@ -15,7 +15,7 @@ export function SaveFormButton({ id }: { id: number }) {
       await UpdateFormContent(id, jsonElements);
       toast({
         title: "Sucesso",
-        description: "Sua enquete foi salva",
+        description: "Seu formulário foi salva",
       });
     } catch {
       toast({

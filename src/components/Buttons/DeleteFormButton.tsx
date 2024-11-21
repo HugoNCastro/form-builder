@@ -52,7 +52,7 @@ export function DeleteFormButton({ id, onDelete }: DeleteFormButtonProps) {
       <AlertDialogTrigger asChild>
         <Button
           variant={"outline"}
-          className="gap-2 text-black w-full dark:text-white bg-red-500 hover:bg-red-600"
+          className="bg-red-500 hover:bg-red-600  text-black dark:text-white w-full mt-2 text-md gap-4"
         >
           Deletar formulário
           <Trash2 className="h-4 w-4" />

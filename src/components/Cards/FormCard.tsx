@@ -35,7 +35,7 @@ export function FormCard({
             <Badge variant={"destructive"}>Não publicada</Badge>
           )}
         </CardTitle>
-        <CardDescription className="flex items-center justify-between text-muted-foreground text-sm">
+        <CardDescription className="flex items-center justify-between text-muted-foreground text-sm h-6">
           {formatDistance(form.createdAt, new Date(), {
             addSuffix: true,
             locale: ptBR,
@@ -66,10 +66,10 @@ export function FormCard({
           <UnpublishFormButton id={form.id} onUnpublish={onUnpublish} />
         )}
         {!form.published && (
-          <div className="w-full mt-2 text-md">
-            <Button asChild variant={"secondary"} className="w-full">
+          <div className="w-full text-md">
+            <Button asChild variant={"secondary"} className="text-black dark:text-white w-full mt-2 text-md gap-4">
               <Link href={`/dashboard/builder/${form.id}`}>
-                Editar enquete
+                Editar formulário
                 <Edit />
               </Link>
             </Button>
