@@ -53,3 +53,29 @@ export type AgentItem = {
   nm_agente: string;
   cd_matricula: string;
 };
+
+export type StatsDashboardProps = {
+  totalStats: {
+    totalVisits: number;
+    totalSubmissions: number;
+    totalSubmissionRate: number;
+    totalBounceRate: number;
+  };
+  detailedStats: {
+    id: number;
+    name: string;
+    visits: number;
+    submissions: number;
+    submissionRate: number;
+    bounceRate: number;
+  }[];
+};
+
+export type StatsFormProps = {
+    id: number;
+    name: string;
+    visits: number;
+    submissions: number;
+    submissionRate: number;
+    bounceRate: number;
+};

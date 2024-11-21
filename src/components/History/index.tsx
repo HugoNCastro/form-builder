@@ -67,9 +67,6 @@ export async function History({ agent }: HistoryProps) {
     });
   });
 
-  console.log(columns, "columns");
-  console.log(rows, "rows");
-
   return (
     <>
       <div className="container pt-10 space-y-6 border-b border-muted">

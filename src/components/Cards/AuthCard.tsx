@@ -48,10 +48,6 @@ export function AuthCard() {
 
   const isAgentInvalid = !agent.length || !localStorageAgent
 
-  console.log(localStorageAgent, 'localStorageAgent')
-  console.log(agent.length, 'agent.length')
-  console.log(isAgentInvalid, 'isAgentInvalid')
-
   return (
     <div className="flex min-h-screen items-center justify-center flex-1 w-full">
       <Card className="rounded border-none shadow-xl shadow-slate-900 flex">

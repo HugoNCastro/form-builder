@@ -8,7 +8,7 @@ import {
   CardFooter,
 } from "../ui/card";
 import { formatDistance } from "date-fns";
-import { ArrowRightIcon, Edit, View, ViewIcon } from "lucide-react";
+import { ArrowRightIcon, Edit, Eye,ListCheck } from "lucide-react";
 import { ptBR } from "date-fns/locale";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
@@ -42,9 +42,9 @@ export function FormCard({
           })}
           {form.published && (
             <span className="flex items-center gap-2">
-              <View className="text-muted-foreground" />
+              <Eye className="text-muted-foreground" />
               <span>{form.visits.toLocaleString()}</span>
-              <ViewIcon className="text-muted-foreground" />
+              <ListCheck className="text-muted-foreground" />
               <span>{form.submissions.toLocaleString()}</span>
             </span>
           )}
