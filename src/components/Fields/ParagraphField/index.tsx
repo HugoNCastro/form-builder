@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { TextCursorInput } from "lucide-react";
 import {
@@ -20,14 +20,17 @@ const extraAttributes = {
 };
 
 export const propertiesSchema = z.object({
-  text: z.string().min(2).max(500),
-})
+  text: z
+    .string()
+    .min(2)
+    .max(500, { message: "Limite de caracteres atingido." }),
+});
 
 export type CustomInstance = FormElementInstance & {
   extraAttributes: typeof extraAttributes;
-}
+};
 
-export type PropertiesFormSchemaType = z.infer<typeof propertiesSchema>
+export type PropertiesFormSchemaType = z.infer<typeof propertiesSchema>;
 
 export const ParagraphFieldFormElement: FormElement = {
   type,
@@ -44,7 +47,5 @@ export const ParagraphFieldFormElement: FormElement = {
   formComponent: FormComponent,
   propertiesComponent: PropertiesComponent,
 
-  validate: () => true
+  validate: () => true,
 };
-
-

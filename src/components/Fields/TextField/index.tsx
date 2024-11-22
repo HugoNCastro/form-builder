@@ -21,10 +21,17 @@ const extraAttributes = {
 };
 
 export const propertiesSchema = z.object({
-  label: z.string().min(2).max(50),
-  helperText: z.string().max(200),
+  label: z
+    .string()
+    .min(2)
+    .max(50, { message: "Limite de caracteres atingido." }),
+  helperText: z
+    .string()
+    .max(200, { message: "Limite de caracteres atingido." }),
   required: z.boolean().default(false),
-  placeHolder: z.string().max(50),
+  placeHolder: z
+    .string()
+    .max(50, { message: "Limite de caracteres atingido." }),
 });
 
 export type CustomInstance = FormElementInstance & {

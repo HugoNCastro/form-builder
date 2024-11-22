@@ -150,7 +150,7 @@ export function PropertiesComponent({
                   className="gap-2"
                   onClick={(e) => {
                     e.preventDefault(); //avoid submit
-                    form.setValue("options", field.value.concat("New option"));
+                    form.setValue("options", field.value.concat("Adicionar"));
                   }}
                 >
                   <PlusIcon />

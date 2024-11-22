@@ -15,7 +15,7 @@ import {
 import { DragOverlayWrapper } from "../Designer/DragOverlayWrapper";
 import { useEffect, useState } from "react";
 import { useDesigner } from "../hooks/useDesigner";
-import { ArrowLeftIcon, ArrowRightIcon, Pen } from "lucide-react";
+import { ArrowLeftIcon, ArrowRightIcon, Loader } from "lucide-react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { toast } from "@/hooks/use-toast";
@@ -56,8 +56,7 @@ export default function FormBuilder({ form }: { form: Form }) {
   if (!isReady) {
     return (
       <div className="flex flex-col items-center justify-center w-full h-full">
-        <Pen className="animate-spin h-12 w-12" />
-        {/* Change icon to spinner */}
+        <Loader className="animate-spin h-12 w-12" />
       </div>
     );
   }

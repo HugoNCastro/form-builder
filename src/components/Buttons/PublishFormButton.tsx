@@ -1,4 +1,4 @@
-import { Pen, SendIcon } from "lucide-react";
+import { Loader, SendIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import {
   AlertDialog,
@@ -73,8 +73,7 @@ export function PublishFormButton({ id }: { id: number }) {
             }}
             className="text-white"
           >
-            Prosseguir {loading && <Pen className="animate-spin" />}
-            {/* Change icon to spinner */}
+            Prosseguir {loading && <Loader className="animate-spin" />}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

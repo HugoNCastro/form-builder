@@ -1,4 +1,4 @@
-import { Pen, SaveIcon } from "lucide-react";
+import { Loader, SaveIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { useDesigner } from "../hooks/useDesigner";
 import { UpdateFormContent } from "@/actions/form";
@@ -15,7 +15,7 @@ export function SaveFormButton({ id }: { id: number }) {
       await UpdateFormContent(id, jsonElements);
       toast({
         title: "Sucesso",
-        description: "Seu formulário foi salva",
+        description: "Seu formulário foi salvo",
       });
     } catch {
       toast({
@@ -37,8 +37,7 @@ export function SaveFormButton({ id }: { id: number }) {
     >
       <SaveIcon className="h-4 w-4" />
       Salvar
-      {loading && <Pen className="animate-spin h-4 w-4" />}
-      {/* change icon to spinner */}
+      {loading && <Loader className="animate-spin h-4 w-4" />}
     </Button>
   );
 }

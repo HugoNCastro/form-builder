@@ -174,7 +174,7 @@ export function Designer({ formId }: DesignerProps) {
           )}
         >
           {!droppable.isOver && elements.length === 0 && (
-            <p className="text-3xl text-muted-foreground flex flex-grow font-bold items-center">
+            <p className="animate-pulse text-3xl text-muted-foreground flex flex-grow font-bold items-center">
               Solte aqui
             </p>
           )}

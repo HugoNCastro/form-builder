@@ -30,10 +30,17 @@ export type CustomInstance = FormElementInstance & {
 export type PropertiesFormSchemaType = z.infer<typeof propertiesSchema>;
 
 export const propertiesSchema = z.object({
-  label: z.string().min(2).max(50),
-  helperText: z.string().max(200),
+  label: z
+    .string()
+    .min(2)
+    .max(250, { message: "Limite de caracteres atingido." }),
+  helperText: z
+    .string()
+    .max(200, { message: "Limite de caracteres atingido." }),
   required: z.boolean().default(false),
-  placeHolder: z.string().max(50),
+  placeHolder: z
+    .string()
+    .max(50, { message: "Limite de caracteres atingido." }),
   options: z.array(z.string()).default([]),
 });
 

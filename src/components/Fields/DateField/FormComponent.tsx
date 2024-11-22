@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 
@@ -58,6 +59,7 @@ export function FormComponent({
           <PopoverContent className="w-auto p-0" align="start">
               <Calendar 
                 mode="single"
+                locale={ptBR}
                 selected={date}
                 onSelect={date => {
                   setDate(date)
