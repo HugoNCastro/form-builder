@@ -34,12 +34,6 @@ export function PropertiesComponent({
     mode: "onBlur",
     defaultValues: {
       title: element.extraAttributes.title,
-    },
-    errors: {
-      title: {
-        type: "maxLength",
-        message: "Limite de caracteres atingido xaaaablau"
-      }
     }
   });
 
