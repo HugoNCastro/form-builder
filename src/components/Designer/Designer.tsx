@@ -2,26 +2,24 @@
 
 import { cn } from "@/lib/utils";
 import { DesignerSidebar } from "../Designer/DesignerSidebar";
-import {
-  DragEndEvent,
-  useDndMonitor,
-  useDroppable,
-} from "@dnd-kit/core";
+import { DragEndEvent, useDndMonitor, useDroppable } from "@dnd-kit/core";
 import { useDesigner } from "../hooks/useDesigner";
-import {
-  ElementsType,
-  FormElements,
-} from "../Form/FormElements";
+import { ElementsType, FormElements } from "../Form/FormElements";
 import { idGenerator } from "@/lib/idGenerator";
 import { DesignerElementWrapper } from "./DesignerElementWrapper";
 
 interface DesignerProps {
-  formId: number
+  formId: number;
 }
 
 export function Designer({ formId }: DesignerProps) {
-  const { elements, addElement, selectedElement, setSelectedElement, removeElement } =
-    useDesigner();
+  const {
+    elements,
+    addElement,
+    selectedElement,
+    setSelectedElement,
+    removeElement,
+  } = useDesigner();
 
   const droppable = useDroppable({
     id: "designer-drop-area",
@@ -34,20 +32,35 @@ export function Designer({ formId }: DesignerProps) {
     onDragEnd: (event: DragEndEvent) => {
       const { active, over } = event;
 
-      if (!active || !over) return;
+      if (!active || !over) {
+        console.error("Evento dragend sem active ou over", { active, over });
+        return;
+      }
 
-      const isDesignerButtonElement =
-        active.data?.current?.isDesignerBtnElement;
+      const activeData = active.data?.current;
+      const overData = over.data?.current;
 
+      if (!activeData || !overData) {
+        console.error("Dados de active ou over ausentes", {
+          activeData,
+          overData,
+        });
+        return;
+      }
+
+      const isDesignerButtonElement = activeData.isDesignerBtnElement || false;
       const isDroppingOverDesignerDropArea =
-        over.data?.current?.isDesignerDropArea;
+        overData.isDesignerDropArea || false;
 
-      // Dropping a sidebar button element over the drop area
       const droppingSidebarButtonOverDesignerDropArea =
         isDesignerButtonElement && isDroppingOverDesignerDropArea;
 
+      // Primeiro cenário - dropando elemento na área de drop
       if (droppingSidebarButtonOverDesignerDropArea) {
-        const type = active.data?.current?.type;
+        console.log("Primeiro cenário iniciado: Drop na área de drop");
+
+        const type = activeData.type;
+
         const newElement = FormElements[type as ElementsType].construct(
           idGenerator()
         );
@@ -55,35 +68,37 @@ export function Designer({ formId }: DesignerProps) {
         addElement(elements.length, newElement);
         return;
       }
+      // Fim do primeiro cenário
 
       const isDroppingOverDesignerElementTopHalf =
-        over.data?.current?.isTopHalfDesignerElement;
+        overData.isTopHalfDesignerElement || false;
       const isDroppingOverDesignerElementBottomHalf =
-        over.data?.current?.isBottomHalfDesignerElement;
+        overData.isBottomHalfDesignerElement || false;
 
       const isDroppingOverDesignerElement =
         isDroppingOverDesignerElementTopHalf ||
         isDroppingOverDesignerElementBottomHalf;
+
       const droppingSidebarButtonOverDesignerElement =
         isDesignerButtonElement && isDroppingOverDesignerElement;
 
-      // Dropping a sidebar button element over a designer element
+      // Segundo cenário - dropando elemento acima ou abaixo de outro
       if (droppingSidebarButtonOverDesignerElement) {
-        const type = active.data?.current?.type;
+        const type = activeData.type;
+
         const newElement = FormElements[type as ElementsType].construct(
           idGenerator()
         );
-
-        const overId = over.data?.current?.elementId;
+        const overElementId = overData.elementId;
 
         const overElementIndex = elements.findIndex(
-          (element) => element.id === overId
+          (element) => element.id === overElementId
         );
         if (overElementIndex === -1) {
           throw new Error("Element not found");
         }
 
-        let indexForNewElement = overElementIndex; // assume element in top half
+        let indexForNewElement = overElementIndex;
 
         if (isDroppingOverDesignerElementBottomHalf) {
           indexForNewElement = overElementIndex + 1;
@@ -92,32 +107,53 @@ export function Designer({ formId }: DesignerProps) {
         addElement(indexForNewElement, newElement);
         return;
       }
+      // Fim do segundo cenário
 
-      //Dropping designer element over a designer element
-      const isDraggingDesignerElement = active.data?.current?.isDesignerElement
-
-      const draggingDesignerElementOverAnotherDesignerElement = isDroppingOverDesignerDropArea && isDraggingDesignerElement
+      // Terceiro cenário - movendo itens dentro da drop area
+      const isDraggingDesignerElement = activeData.isDesignerElement || false;
+      const draggingDesignerElementOverAnotherDesignerElement =
+        isDroppingOverDesignerElement && isDraggingDesignerElement;
 
       if (draggingDesignerElementOverAnotherDesignerElement) {
-        const activeId = active.data?.current?.elementId
-        const overId = over.data?.current?.elementId
+        const activeElementId = activeData.elementId;
+        const overElementId = overData.elementId;
 
-        const activeElementIndex = elements.findIndex(element => element.id === activeId)
-        const overElementIndex = elements.findIndex(element => element.id === overId)
+        if (!activeElementId || !overElementId) {
+          console.error("IDs de active ou over não encontrados", {
+            active,
+            over,
+          });
+          return;
+        }
+
+        const activeElementIndex = elements.findIndex(
+          (element) => element.id === activeElementId
+        );
+        const overElementIndex = elements.findIndex(
+          (element) => element.id === overElementId
+        );
 
         if (activeElementIndex === -1 || overElementIndex === -1) {
-          throw new Error('Element not found')
+          throw new Error("Element not found");
         }
-        const activeElement = { ...elements[activeElementIndex] }
-        removeElement(activeId)
 
-        let indexForNewElement = overElementIndex; // assume element in top half
+        const activeElement = { ...elements[activeElementIndex] };
+
+        removeElement(activeElementId);
+
+        let indexForNewElement = overElementIndex;
 
         if (isDroppingOverDesignerElementBottomHalf) {
           indexForNewElement = overElementIndex + 1;
         }
 
-        addElement(indexForNewElement, activeElement)
+        addElement(indexForNewElement, activeElement);
+      } else {
+        console.error(
+          "Condição inesperada encontrada. Verifique o evento:",
+          event
+        );
+        throw new Error("Algo de errado aconteceu");
       }
     },
   });
@@ -150,7 +186,11 @@ export function Designer({ formId }: DesignerProps) {
           {elements.length > 0 && (
             <div className="flex flex-col w-full gap-2 p-4">
               {elements.map((element) => (
-                <DesignerElementWrapper key={element.id} element={element} formId={formId}/>
+                <DesignerElementWrapper
+                  key={element.id}
+                  element={element}
+                  formId={formId}
+                />
               ))}
             </div>
           )}
@@ -160,5 +200,3 @@ export function Designer({ formId }: DesignerProps) {
     </div>
   );
 }
-
-
