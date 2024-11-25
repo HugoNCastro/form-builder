@@ -15,12 +15,14 @@ import {
 import { DragOverlayWrapper } from "../Designer/DragOverlayWrapper";
 import { useEffect, useState } from "react";
 import { useDesigner } from "../hooks/useDesigner";
-import { ArrowLeftIcon, ArrowRightIcon, Loader } from "lucide-react";
+import { ArrowLeftIcon, ArrowRightIcon, Pen } from "lucide-react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { toast } from "@/hooks/use-toast";
 import Link from "next/link";
 import Confetti from "react-confetti";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
 export default function FormBuilder({ form }: { form: Form }) {
   const { setElements, setSelectedElement } = useDesigner();
@@ -46,8 +48,8 @@ export default function FormBuilder({ form }: { form: Form }) {
 
     const elements = JSON.parse(form.content);
     setElements(elements);
-    setSelectedElement(null)
-    setIsReady(true)
+    setSelectedElement(null);
+    setIsReady(true);
     const readyTimeout = setTimeout(() => setIsReady(true), 500);
 
     return () => clearTimeout(readyTimeout);
@@ -56,7 +58,7 @@ export default function FormBuilder({ form }: { form: Form }) {
   if (!isReady) {
     return (
       <div className="flex flex-col items-center justify-center w-full h-full">
-        <Loader className="animate-spin h-12 w-12" />
+        <Pen className="animate-spin h-12 w-12" />
       </div>
     );
   }
@@ -66,7 +68,12 @@ export default function FormBuilder({ form }: { form: Form }) {
   if (form.published) {
     return (
       <>
-        <Confetti width={window.innerWidth} height={window.innerHeight} recycle={false} numberOfPieces={1000} />
+        <Confetti
+          width={window.innerWidth}
+          height={window.innerHeight}
+          recycle={false}
+          numberOfPieces={1000}
+        />
         <div className="flex flex-col items-center justify-center h-full w-full">
           <div className="max-w-md">
             <h1 className="text-center text-4xl font-bold text-primary border-b pb-2 mb-10"></h1>
@@ -82,7 +89,8 @@ export default function FormBuilder({ form }: { form: Form }) {
                   navigator.clipboard.writeText(shareUrl);
                   toast({
                     title: "Link copiado com sucesso",
-                    description: "Agora você pode compatilhar esse link com outras pessoas",
+                    description:
+                      "Agora você pode compatilhar esse link com outras pessoas",
                   });
                 }}
               >
@@ -112,21 +120,57 @@ export default function FormBuilder({ form }: { form: Form }) {
   return (
     <DndContext sensors={sensors}>
       <main className="flex flex-col w-full">
-        <nav className="flex justify-between border-b-2 p-4 gap-3 items-center">
-          <h2 className="truncate font-medium">
-            <span className="text-muted-foreground mr-2">Formulário: </span>
-            {form.name}
-          </h2>
-          <div className="flex items-center gap-2">
-            <PreviewDialogButton formId={form.id}/>
-            {!form.published && (
-              <>
-                <SaveFormButton id={form.id} />
-                <PublishFormButton id={form.id} />
-              </>
-            )}
+        <nav className="flex justify-between border-b-2 gap-3 p-3">
+          <div>
+            <h2 className="truncate font-medium">
+              <span className="text-muted-foreground mr-2">Formulário: </span>
+              {form.name}
+            </h2>
+            <h2 className="truncate font-medium">
+              <span className="text-muted-foreground mr-2">Autor: </span>
+              {form.author}
+            </h2>
+          </div>
+          <div>
+            <h2 className="truncate font-medium">
+              <span className="text-muted-foreground mr-2">
+                Matrícula autor:{" "}
+              </span>
+              {form.authorAccount}
+            </h2>
+            <h2 className="truncate font-medium">
+              <span className="text-muted-foreground mr-2">Criado em: </span>
+              {format(form.createdAt, "dd/mm/yyyy HH:MM", {
+                locale: ptBR,
+              })}
+            </h2>
+          </div>
+          <div>
+            <h2 className="truncate font-medium">
+              <span className="text-muted-foreground mr-2">
+                Atualizado por:{" "}
+              </span>
+              {form.updatedBy} | {form.updatedByAccount}
+            </h2>
+            <h2 className="truncate font-medium">
+              <span className="text-muted-foreground mr-2">
+                Atualizado em:{" "}
+              </span>
+              {format(form.updatedAt, "dd/mm/yyyy HH:MM", {
+                locale: ptBR,
+              })}
+            </h2>
           </div>
         </nav>
+        <div className="flex items-center justify-end gap-2 mt-2 mb-2">
+          <PreviewDialogButton formId={form.id} />
+          {!form.published && (
+            <>
+              <SaveFormButton id={form.id} />
+              <PublishFormButton id={form.id} />
+            </>
+          )}
+        </div>
         <div
           className="flex flex-grow items-center justify-center relative overflow-y-auto h-[200px] 
       bg-accent bg-[url(/paper.svg)] dark:bg-[url(/paper-dark.svg)]"
