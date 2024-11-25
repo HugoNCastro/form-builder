@@ -36,6 +36,7 @@ export function FormComponent({
         <Input
           type="number"
           className={cn(error && "border-red-500")}
+          min={0}
           placeholder={placeHolder}
           onChange={(e) => setValue(e.target.value)}
           onBlur={(e) => {
