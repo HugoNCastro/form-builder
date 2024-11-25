@@ -1,9 +1,11 @@
 import { AgentItem } from '@/types'
-import { createContext, Dispatch, SetStateAction } from 'react'
+import { createContext } from 'react'
 
 interface AgentContextType {
   agent: AgentItem[]
-  setAgent: Dispatch<SetStateAction<AgentItem[]>>
+  setAgentData: (agentIdentifier: string) => Promise<void>
+  loading: boolean
+  error: string | null
 }
 
 export const AgentContext = createContext({} as AgentContextType)

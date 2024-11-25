@@ -8,7 +8,6 @@ import { toast } from "@/hooks/use-toast";
 import { SubmitForm } from "@/actions/form";
 import { AttemptData } from "@/types";
 import { useAgent } from "../providers/AgentProvider";
-import { getAgentPermissions } from "@/actions/agent";
 
 export function FormSubmitComponent({
   formUrl,
@@ -29,17 +28,13 @@ export function FormSubmitComponent({
   const [submitted, setSubmitted] = useState(false);
   const [pending, startTransition] = useTransition();
 
-  const { agent, setAgent } = useAgent();
+  const { agent, setAgentData } = useAgent();
 
   useEffect(() => {
     if(agentID){
-      getAgentPermissions(agentID).then((agentData) => {
-        setAgent(agentData)
-      })
-
-      window.localStorage.setItem("@surveys/agent", agentID);
+      setAgentData(agentID)
+      window.localStorage.setItem('@cmx-forms/agent', agentID)
     }
-
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [agentID]);
 

@@ -57,7 +57,6 @@ export function Designer({ formId }: DesignerProps) {
 
       // Primeiro cenário - dropando elemento na área de drop
       if (droppingSidebarButtonOverDesignerDropArea) {
-        console.log("Primeiro cenário iniciado: Drop na área de drop");
 
         const type = activeData.type;
 

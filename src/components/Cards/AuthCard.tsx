@@ -1,52 +1,42 @@
-'use client'
+"use client";
 
-import { Card, CardContent } from '@/components/ui/card'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
-import { getAgentPermissions } from '@/actions/agent'
-import { useAgent } from '@/components/providers/AgentProvider'
-import { Button } from '@/components/ui/button'
-import { LoaderCircle, UserRound, UserRoundX } from 'lucide-react'
-import { Separator } from '@/components/ui/separator'
-import { AgentItem } from '@/types'
+import { Card, CardContent } from "@/components/ui/card";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useAgent } from "@/components/providers/AgentProvider";
+import { Button } from "@/components/ui/button";
+import { LoaderCircle, UserRound, UserRoundX } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 
 export function AuthCard() {
-  const [loading, setLoading] = useState(true)
-  const [localStorageAgent, setLocalStorageAgent] = useState<string | null>(null)
-  const agentParam = useSearchParams().get('agent')
+  const [loading, setLoading] = useState(true);
+  const agentParam = useSearchParams().get("agent");
 
-  const { agent, setAgent } = useAgent()
-  const router = useRouter()
+  const { agent, setAgentData } = useAgent();
+  const router = useRouter();
 
   useEffect(() => {
-    const storedAgent = window.localStorage.getItem('@surveys/agent')
-    setLocalStorageAgent(storedAgent)
-
     if (agentParam) {
-      getAgentPermissions(agentParam).then((agentPermissions: Array<AgentItem>) => {
-        setAgent(agentPermissions)
-        if (agentPermissions.length > 0) {
-          window.localStorage.setItem('@surveys/agent', String(agentPermissions[0].cd_agente))
-        }
-        setLoading(false)
-      })
-    } else {
+      setAgentData(agentParam);
+      window.localStorage.setItem('@cmx-forms/agent', agentParam)
       setLoading(false)
     }
-  }, [agentParam, setAgent])
+  }, [agentParam, setAgentData]);
 
   async function handleRedirectByPermissions() {
     if (agent) {
-      const verifyPermissions = agent.filter((agent) => agent.nm_action === 'edit')
+      const verifyPermissions = agent.filter(
+        (agent) => agent.nm_action === "edit"
+      );
       if (verifyPermissions.length > 0) {
-        router.push('/dashboard')
+        router.push("/dashboard");
       } else {
-        router.push(`/history?agent=${agent[0].cd_agente}`)
+        router.push(`/history?agent=${agent[0].cd_agente}`);
       }
     }
   }
 
-  const isAgentInvalid = !agent.length || !localStorageAgent
+  const isAgentInvalid = !agent.length;
 
   return (
     <div className="flex min-h-screen items-center justify-center flex-1 w-full">
@@ -56,7 +46,7 @@ export function AuthCard() {
             <LoaderCircle className="animate-spin" />
             <h1>Carregando dados...</h1>
           </div>
-        ) : isAgentInvalid ? ( 
+        ) : isAgentInvalid ? (
           <CardContent className="w-96 h-64 flex-1 flex flex-col justify-center gap-8 items-center">
             <div className="flex p-6 justify-center items-center rounded-full bg-slate-900/20">
               <UserRoundX size={60} />
@@ -79,10 +69,10 @@ export function AuthCard() {
                 {agent.map((agentData) => (
                   <div key={agentData.nm_action}>
                     <p className="hover:text-sky-400 cursor-default animate-fade-in">
-                      {agentData.nm_action === 'list' && 'Visualizar'}
+                      {agentData.nm_action === "list" && "Visualizar"}
                     </p>
                     <p className="hover:text-sky-400 cursor-default animate-fade-in">
-                      {agentData.nm_action === 'edit' && 'Criar e editar'}
+                      {agentData.nm_action === "edit" && "Criar e editar"}
                     </p>
                   </div>
                 ))}
@@ -108,5 +98,5 @@ export function AuthCard() {
         )}
       </Card>
     </div>
-  )
+  );
 }

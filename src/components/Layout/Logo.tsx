@@ -4,20 +4,11 @@ import { env } from "@/env";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import { useAgent } from "../providers/AgentProvider";
-import { useEffect, useState } from "react";
-import { getAgentPermissions } from "@/actions/agent";
 import { useRouter } from "next/navigation"; 
-import { AgentItem } from "@/types";
 
 export function Logo() {
-  const { agent, setAgent } = useAgent();
-  const [agentOnLocalStorage, setAgentOnLocalStorage] = useState<string | null>(null);
+  const { agent } = useAgent();
   const router = useRouter(); 
-
-  useEffect(() => {
-    const storedAgent = localStorage.getItem("@surveys/agent");
-    setAgentOnLocalStorage(storedAgent);
-  }, []);
 
   async function verifyPermissions(): Promise<string> {
     if (agent && agent.length > 0) {
@@ -27,17 +18,7 @@ export function Logo() {
       } else {
         return `/history?agent=${String(agent[0].cd_agente)}`;
       }
-    } else if (agentOnLocalStorage !== null) {
-      const agentData = await getAgentPermissions(agentOnLocalStorage);
-      setAgent(agentData);
-      const hasEditPermission = agentData.some((item: AgentItem) => item.nm_action === "edit");
-      if (hasEditPermission) {
-        return "/dashboard";
-      } else {
-        return `/history?agent=${String(agentData[0].cd_agente)}`;
-      }
     }
-
     return "/"; 
   }
 
