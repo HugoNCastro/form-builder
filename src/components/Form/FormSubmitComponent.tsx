@@ -112,7 +112,7 @@ export function FormSubmitComponent({
       <div className="flex justify-center w-full h-full items-center p-8">
         <div
           key={renderKey}
-          className="max-w-[620px] flex flex-col gap-4 flex-grow bg-background w-full p-8 overflow-y-auto border shadow-xl shadow-blue-700 rounded"
+          className="max-w-[820px] flex flex-col gap-4 flex-grow bg-background w-full p-8 overflow-y-auto border shadow-xl shadow-blue-700 rounded"
         >
           <h1 className="text-2xl font-bold">Formulário enviado com sucesso !</h1>
           <p className="text-muted-foreground">
@@ -127,7 +127,7 @@ export function FormSubmitComponent({
     <div className="flex justify-center w-full items-center h-full p-8">
       <div
         key={renderKey}
-        className="max-w-[620px] flex flex-col gap-4 flex-grow bg-background w-full p-8 overflow-y-auto border shadow-xl shadow-blue-700 rounded"
+        className="max-w-[820px] flex flex-col gap-4 flex-grow bg-background w-full p-8 overflow-y-auto border shadow-xl shadow-blue-700 rounded"
       >
         {content.map((element) => {
           const FormElement = FormElements[element.type].formComponent;
