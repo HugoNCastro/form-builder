@@ -19,7 +19,7 @@ export function DesignerComponent({ elementInstance, formInfo }: DesignComponent
 
   return (
     <div className="flex flex-col gap-2 w-full">
-      <h1 className="text-muted-foreground text-xl">
+      <h1 className="text-muted-foreground">
         Cabeçalho
       </h1>
       <div className="grid grid-cols-3 space-y-1">

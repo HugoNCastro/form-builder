@@ -115,7 +115,7 @@ export function DesignerElementWrapper({ element, formId }:  DesignerElementWrap
       <div
         className={cn(
           "flex opacity-100 w-full h-[120p] items-center rounded-md bg-accent/40 px-4 py-2 pointer-events-none",
-          isMouseOver && "opacity-30"
+          isMouseOver && "opacity-0"
         )}
       >
         <DesignerElement elementInstance={element} formInfo={formInfo}/>
