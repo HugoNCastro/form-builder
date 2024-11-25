@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { formSchema, formSchemaType } from "../../schemas/form";
+import { AgentItem } from "@/types";
 
 export async function GetFormStats() {
   const totalStats = prisma.form.aggregate({
@@ -120,13 +121,16 @@ export async function GetFormById(id: number) {
   });
 }
 
-export async function UpdateFormContent(id: number, jsonContent: string) {
+export async function UpdateFormContent(id: number, jsonContent: string, userData: AgentItem) {
   return await prisma.form.update({
     where: {
       id,
     },
     data: {
       content: jsonContent,
+      updatedAt: new Date(),
+      updatedBy: userData.nm_agente,
+      updatedByAccount: userData.cd_matricula
     },
   });
 }

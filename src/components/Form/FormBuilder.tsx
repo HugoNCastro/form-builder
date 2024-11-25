@@ -21,12 +21,16 @@ import { Button } from "../ui/button";
 import { toast } from "@/hooks/use-toast";
 import Link from "next/link";
 import Confetti from "react-confetti";
-import { format } from "date-fns";
+import { formatDate } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { useAgent } from "../providers/AgentProvider";
+import { GetFormById, UpdateFormContent } from "@/actions/form";
 
-export default function FormBuilder({ form }: { form: Form }) {
+export default function FormBuilder({ id }: { id: number }) {
+  const [form, setForm] = useState({} as Form);
   const { setElements, setSelectedElement } = useDesigner();
   const [isReady, setIsReady] = useState(false);
+  const { agent } = useAgent();
 
   const mouseSensor = useSensor(MouseSensor, {
     activationConstraint: {
@@ -41,19 +45,49 @@ export default function FormBuilder({ form }: { form: Form }) {
     },
   });
 
-  const sensors = useSensors(mouseSensor, touchSensor);
+  async function fetchForm(id: number) {
+    const fetchedForm = await GetFormById(id);
+    if (fetchedForm) {
+      setForm(fetchedForm);
+      setElements(JSON.parse(fetchedForm.content));
+      setSelectedElement(null);
+      setIsReady(true);
+    }
+  }
 
   useEffect(() => {
     if (isReady) return;
 
-    const elements = JSON.parse(form.content);
-    setElements(elements);
-    setSelectedElement(null);
-    setIsReady(true);
-    const readyTimeout = setTimeout(() => setIsReady(true), 500);
+    if (id) {
+      fetchForm(id);
+      const readyTimeout = setTimeout(() => setIsReady(true), 500);
 
-    return () => clearTimeout(readyTimeout);
-  }, [form, isReady, setElements, setSelectedElement]);
+      return () => clearTimeout(readyTimeout);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
+
+  async function handleSave(updatedContent: string) {
+    if (!form || agent.length === 0) return;
+
+    try {
+      const updatedForm = await UpdateFormContent(
+        form.id,
+        updatedContent,
+        agent[0]
+      );
+      setForm(updatedForm);
+      toast({ title: "Sucesso", description: "Seu formulário foi salvo." });
+    } catch {
+      toast({
+        title: "Erro",
+        description: "Não foi possível salvar o formulário. Tente novamente.",
+        variant: "destructive",
+      });
+    }
+  }
+
+  const sensors = useSensors(mouseSensor, touchSensor);
 
   if (!isReady) {
     return (
@@ -64,6 +98,14 @@ export default function FormBuilder({ form }: { form: Form }) {
   }
 
   const shareUrl = `${window.location.origin}/submit/${form.sharedURL}`;
+
+  if (agent.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center w-full h-full">
+        Problema interno, por favor reabra a página.
+      </div>
+    );
+  }
 
   if (form.published) {
     return (
@@ -128,19 +170,17 @@ export default function FormBuilder({ form }: { form: Form }) {
             </h2>
             <h2 className="truncate font-medium">
               <span className="text-muted-foreground mr-2">Autor: </span>
-              {form.author}
+              {form.author} | {form.authorAccount}
             </h2>
           </div>
           <div>
             <h2 className="truncate font-medium">
-              <span className="text-muted-foreground mr-2">
-                Matrícula autor:{" "}
-              </span>
-              {form.authorAccount}
+              <span className="text-muted-foreground mr-2">Campanha | Mailing: </span>
+              {form.campaignDesc} | {form.mailingDesc}
             </h2>
             <h2 className="truncate font-medium">
               <span className="text-muted-foreground mr-2">Criado em: </span>
-              {format(form.createdAt, "dd/mm/yyyy HH:MM", {
+              {formatDate(form.createdAt, "dd/MM/yyyy HH:mm", {
                 locale: ptBR,
               })}
             </h2>
@@ -156,7 +196,7 @@ export default function FormBuilder({ form }: { form: Form }) {
               <span className="text-muted-foreground mr-2">
                 Atualizado em:{" "}
               </span>
-              {format(form.updatedAt, "dd/mm/yyyy HH:MM", {
+              {formatDate(form.updatedAt, "dd/MM/yyyy HH:mm", {
                 locale: ptBR,
               })}
             </h2>
@@ -166,7 +206,7 @@ export default function FormBuilder({ form }: { form: Form }) {
           <PreviewDialogButton formId={form.id} />
           {!form.published && (
             <>
-              <SaveFormButton id={form.id} />
+              <SaveFormButton onSave={handleSave} />
               <PublishFormButton id={form.id} />
             </>
           )}

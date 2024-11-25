@@ -93,7 +93,7 @@ export function DesignerElementWrapper({ element, formId }:  DesignerElementWrap
           <div className="absolute right-0 h-full">
             <Button
               variant={"outline"}
-              className="flex justify-center h-full border rounded-md rounded-l-none bg-red-500"
+              className="flex justify-center h-full rounded-md rounded-l-none bg-red-500"
               onClick={(e) => {
                 e.stopPropagation();
                 removeElement(element.id);
