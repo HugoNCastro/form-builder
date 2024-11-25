@@ -4,35 +4,33 @@ import { env } from "@/env";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import { useAgent } from "../providers/AgentProvider";
-import { useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation";
 
 export function Logo() {
   const { agent } = useAgent();
-  const router = useRouter(); 
+  const router = useRouter();
 
   async function verifyPermissions(): Promise<string> {
     if (agent && agent.length > 0) {
       const hasEditPermission = agent.some((item) => item.nm_action === "edit");
       if (hasEditPermission) {
         return "/dashboard";
-      } else {
-        return `/history?agent=${String(agent[0].cd_agente)}`;
       }
     }
-    return "/"; 
+    return `/history?agent=${String(agent[0].cd_agente)}`;
   }
 
   const handleRedirect = async (e: React.MouseEvent) => {
-    e.preventDefault(); 
+    e.preventDefault();
     const redirectTo = await verifyPermissions();
-    router.push(redirectTo); 
+    router.push(redirectTo);
   };
 
   return (
     <Button
       className="flex items-center gap-2 bg-transparent hover:bg-inherit"
       variant={"ghost"}
-      onClick={handleRedirect} 
+      onClick={handleRedirect}
     >
       <Image
         src={env.NEXT_PUBLIC_LOGO_PATH}

@@ -24,13 +24,15 @@ import Confetti from "react-confetti";
 import { formatDate } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { useAgent } from "../providers/AgentProvider";
-import { GetFormById, UpdateFormContent } from "@/actions/form";
+import { GetFormById, PublishForm, UpdateFormContent } from "@/actions/form";
+import { useRouter } from "next/navigation";
 
 export default function FormBuilder({ id }: { id: number }) {
   const [form, setForm] = useState({} as Form);
   const { setElements, setSelectedElement } = useDesigner();
   const [isReady, setIsReady] = useState(false);
   const { agent } = useAgent();
+  const router = useRouter();
 
   const mouseSensor = useSensor(MouseSensor, {
     activationConstraint: {
@@ -82,6 +84,27 @@ export default function FormBuilder({ id }: { id: number }) {
       toast({
         title: "Erro",
         description: "Não foi possível salvar o formulário. Tente novamente.",
+        variant: "destructive",
+      });
+    }
+  }
+
+  async function handlePublish() {
+    if (!form || agent.length === 0) return;
+
+    try {
+      const updatedForm = await PublishForm(id);
+
+      toast({
+        title: "Sucesso",
+        description: "Seu formulário está disponível para preenchimento",
+      });
+      setForm(updatedForm)
+      router.refresh();
+    } catch {
+      toast({
+        title: "Erro",
+        description: "Algo deu errado, por favor tente novamente.",
         variant: "destructive",
       });
     }
@@ -207,7 +230,7 @@ export default function FormBuilder({ id }: { id: number }) {
           {!form.published && (
             <>
               <SaveFormButton onSave={handleSave} />
-              <PublishFormButton id={form.id} />
+              <PublishFormButton id={form.id} onPublish={handlePublish}/>
             </>
           )}
         </div>

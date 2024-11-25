@@ -11,32 +11,19 @@ import {
   AlertDialogTrigger,
 } from "../ui/alert-dialog";
 
-import { toast } from "@/hooks/use-toast";
-
 import { useTransition } from "react";
-import { PublishForm } from "@/actions/form";
-import { useRouter } from "next/navigation";
 
-export function PublishFormButton({ id }: { id: number }) {
+export function PublishFormButton({
+  id,
+  onPublish,
+}: {
+  id: number;
+  onPublish: (id: number) => Promise<void>;
+}) {
   const [loading, startTransition] = useTransition();
-  const router = useRouter();
 
   async function publishForm() {
-    try {
-      await PublishForm(id);
-
-      toast({
-        title: "Sucesso",
-        description: "Seu formulário está disponível para preenchimento",
-      });
-      router.refresh();
-    } catch {
-      toast({
-        title: "Erro",
-        description: "Algo deu errado, por favor tente novamente.",
-        variant: "destructive",
-      });
-    }
+    onPublish(id);
   }
 
   return (
@@ -54,7 +41,7 @@ export function PublishFormButton({ id }: { id: number }) {
         <AlertDialogTitle>
           Você tem certeza ?
           <AlertDialogDescription>
-            Essa ação poderá ser alterada posteriormente. 
+            Essa ação poderá ser alterada posteriormente.
             <br />
             <br />
             <span className="font-medium">
