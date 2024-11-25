@@ -2,24 +2,22 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useAgent } from "@/components/providers/AgentProvider";
 import { Button } from "@/components/ui/button";
-import { LoaderCircle, UserRound, UserRoundX } from "lucide-react";
+import { Loader, MessageSquareWarning, UserRound, UserRoundX } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 export function AuthCard() {
-  const [loading, setLoading] = useState(true);
   const agentParam = useSearchParams().get("agent");
 
-  const { agent, setAgentData } = useAgent();
+  const { agent, setAgentData, loading } = useAgent();
   const router = useRouter();
 
   useEffect(() => {
     if (agentParam) {
       setAgentData(agentParam);
-      window.localStorage.setItem('@cmx-forms/agent', agentParam)
-      setLoading(false)
+      window.localStorage.setItem("@cmx-forms/agent", agentParam);
     }
   }, [agentParam, setAgentData]);
 
@@ -38,14 +36,29 @@ export function AuthCard() {
 
   const isAgentInvalid = !agent.length;
 
+  if (!agentParam) {
+    return (
+      <div className="flex min-h-screen items-center justify-center flex-1 w-full">
+        <div className="rounded border-none shadow-xl shadow-slate-900 flex">
+          <div className="w-96 h-64 flex flex-col flex-1 justify-center items-center">
+            <MessageSquareWarning size={60} />
+            <h1>Matrícula do agente não fornecida.</h1>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex min-h-screen items-center justify-center flex-1 w-full">
       <Card className="rounded border-none shadow-xl shadow-slate-900 flex">
         {loading ? (
-          <div className="w-96 h-64 flex flex-col flex-1 justify-center items-center">
-            <LoaderCircle className="animate-spin" />
-            <h1>Carregando dados...</h1>
-          </div>
+          <CardContent className="w-96 h-64 flex-1 flex flex-col justify-center gap-8 items-center">
+            <div className="flex p-6 justify-center items-center rounded-full bg-slate-900/20">
+              <Loader className="animate-spin" size={60} />
+            </div>
+            <span className="text-center">Carregando dados</span>
+          </CardContent>
         ) : isAgentInvalid ? (
           <CardContent className="w-96 h-64 flex-1 flex flex-col justify-center gap-8 items-center">
             <div className="flex p-6 justify-center items-center rounded-full bg-slate-900/20">
